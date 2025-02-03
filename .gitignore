@@ -131,3 +131,4 @@ dist
 
 .env
 MONGO_URI=mongodb://localhost:27017/Virtual-Art-Gallery
+JWT_SECRET=AbC123XyZ456!@#SecureKey987654321
