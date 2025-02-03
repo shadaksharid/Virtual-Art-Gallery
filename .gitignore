@@ -128,3 +128,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+.env
+MONGO_URI=mongodb://localhost:27017/Virtual-Art-Gallery
