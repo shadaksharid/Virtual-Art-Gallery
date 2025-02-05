@@ -1,0 +1,74 @@
+/* src/App.css */
+
+/* Global styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f7fb;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main container styling */
+.container {
+    text-align: center;
+    margin-top: 80px;
+    padding: 20px;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Header styling */
+h1 {
+    font-size: 3rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Styling for links */
+.links {
+    margin-top: 30px;
+}
+
+.link {
+    font-size: 1.1rem;
+    color: #ffffff;
+    background: linear-gradient(to right, #007bff, #00c6ff);
+    padding: 12px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    margin: 0 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Link hover effects */
+.link:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+/* Footer styling */
+.footer {
+    margin-top: 40px;
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    .link {
+        font-size: 1rem;
+        padding: 10px 15px;
+        margin: 5px 10px;
+    }
+}
