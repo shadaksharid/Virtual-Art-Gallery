@@ -1,36 +1,87 @@
 .auth-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 40px;
+  border-radius: 15px;
+  background: linear-gradient(to right, #7155af, #9580af); 
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.auth-container h2 {
+  margin-bottom: 20px;
+  color: white;
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+.auth-container input {
+  width:80%;
+  padding: 15px;
+  margin: 12px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.auth-container input:focus {
+  border-color: #7453bb;
+  background-color: #fff;
+}
+
+.auth-container button {
+  width: auto;  
+  padding: 10px 20px;
+  background: #ffffff;
+  color: #7453bb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-top: 20px;
+}
+
+.auth-container button:hover {
+  background-color: #7c3dc9;
+  transform: scale(1.05);
+  color: white;
+}
+
+.auth-container .error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.auth-container .link {
+  font-size: 1rem;
+  margin-top: 20px;
+  color: #ffffff;
+  text-decoration: none;
+  background: linear-gradient(to right, #7453bb, #7c3dc9);
+  padding: 10px 20px;
+  border-radius: 30px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.auth-container .link:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .auth-container {
+      padding: 30px;
+      max-width: 90%;
   }
-  
-  .auth-container h2 {
-    margin-bottom: 20px;
-  }
-  
-  .auth-container input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .auth-container button {
-    width: 100%;
-    padding: 10px;
-    background: #9d4ce3fc;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .auth-container .error {
-    color: red;
-    font-size: 14px;
-  }
-  
+}
