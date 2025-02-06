@@ -12,12 +12,10 @@ const app = express();
 
 connectDB();
 
-
 app.use(express.json());
 
 app.use(cors())
 app.use("/api/users", userRoutes);
-
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Virtual Art Gallery API");

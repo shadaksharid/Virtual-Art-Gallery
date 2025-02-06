@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Gallery.css";
+import API from "../axios";
 
 const sampleartwork = [
     {
@@ -64,7 +65,7 @@ const sampleartwork = [
     },
 ];
 
-const Gallery = () => {
+ const Gallery = () => {
     return(
         <div className="gallery-container">
             <h2>Virtual Art Gallery</h2>
