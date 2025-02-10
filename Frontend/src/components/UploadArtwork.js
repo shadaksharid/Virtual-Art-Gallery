@@ -1,6 +1,7 @@
 import { useState } from "react";
 //import { uploadArtwork } from "../axios";
 import API from "../axios";
+import "../styles/upload.css"
 
 const UploadArtwork = () => {
     const [title, setTitle] = useState("");
@@ -42,14 +43,16 @@ const UploadArtwork = () => {
         }
     };
     return(
-        <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required></input>
-            <input type="text" placeholder="Artist" value={artist} onChange={(e) => setArtist(e.target.value)} required></input>
-            <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} required></input>
-            <button type="submit" disabled={loading}>
-                {loading? "Uploading..." : "upload"}
-            </button>
-        </form>
+        <div className="upload-container">
+            <form onSubmit={handleSubmit}>
+                <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required></input>
+                <input type="text" placeholder="Artist" value={artist} onChange={(e) => setArtist(e.target.value)} required></input>
+                <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} required></input>
+                <button type="submit" disabled={loading}>
+                    {loading? "Uploading..." : "upload"}
+                </button>
+            </form>
+        </div>
     );
 };
 

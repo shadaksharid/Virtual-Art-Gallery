@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Gallery.css";
+import "../styles/app_style.css";
 import API from "../axios";
+import { Link } from "react-router-dom";
 
 // const sampleartwork = [
 //     {
@@ -88,9 +90,15 @@ import API from "../axios";
     return(
         <div className="gallery-container">
             <h2>Virtual Art Gallery</h2>
+
+            <div>
+              <Link to="/upload" className="nav-button">Upload</Link>
+            </div>
+
             {loading && <p>Loading artworks...</p>}
             {error && <p className="error-message">{error}</p>}
             {!loading && artworks.length === 0 && <p>No artworks available.</p>}
+
             <div className="gallery-grid">
                 {artworks.map((art) => (
                     <div key={art._id} className="art-card">

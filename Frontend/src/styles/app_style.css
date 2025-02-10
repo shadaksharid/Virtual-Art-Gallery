@@ -47,6 +47,29 @@ h1 {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transform: scale(1.05);
 }
+.nav-button {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #f9f8fa;
+    color: #7453bb;
+    padding: 12px 24px;
+    margin: 10px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.nav-button:hover {
+    background-color: #7c3dc9;
+    transform: scale(1.05);
+    color: white;
+}
+
+.nav-button:active {
+    transform: scale(0.95);
+}
 
 
 .footer {

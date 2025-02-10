@@ -11,9 +11,9 @@ function App() {
             <center><h1>Welcome to the Virtual Art Gallery</h1></center>
 
             <div className="links"> 
-                <Link to="/">Home</Link> |
-                <Link to="/login">Login</Link> |
-                <Link to="/register">Register</Link> 
+                <Link to="/" className="nav-button">Home</Link> |
+                <Link to="/login" className="nav-button">Login</Link> |
+                <Link to="/register"className="nav-button">Register</Link> 
             </div>
 
             <Routes>
