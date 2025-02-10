@@ -16,12 +16,12 @@ const AuthForm = ({ isLogin }) => {
         e.preventDefault();
         try{
             if(isLogin){
-                const res = await API.post("api/users/login",{email : formData.email, password: formData.password});
+                const res = await API.post("users/login",{email : formData.email, password: formData.password});
                 localStorage.setItem("token", res.data.token);
                 alert("Login successfull");
                 navigate("/gallery")
             }else{
-                await API.post("api/users/signup", formData);
+                await API.post("users/signup", formData);
                 alert("Registration successfull");
                 navigate("/login")
             }

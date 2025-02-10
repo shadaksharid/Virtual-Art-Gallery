@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import '../src/styles/app_style.css';
 import Gallery from "./pages/Gallery";
+import UploadArtwork from "./components/UploadArtwork";
 
 function App() {
     return (
@@ -12,7 +13,7 @@ function App() {
             <div className="links"> 
                 <Link to="/">Home</Link> |
                 <Link to="/login">Login</Link> |
-                <Link to="/register">Register</Link>
+                <Link to="/register">Register</Link> 
             </div>
 
             <Routes>
@@ -22,6 +23,9 @@ function App() {
 
             <Routes>
                 <Route path="/gallery" element={<Gallery />}/>
+            </Routes>
+            <Routes>
+                <Route path="/upload" element={<UploadArtwork />} />
             </Routes>
             <div className="footer">
                 <p>&copy; 2025 Virtual Art Gallery</p>

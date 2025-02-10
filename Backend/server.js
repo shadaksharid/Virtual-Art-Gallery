@@ -1,21 +1,21 @@
-
 const express = require("express");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
+const artworkRoutes = require("./routes/artworkRoutes");
 const dotenv = require("dotenv");
 const cors = require("cors"); 
 dotenv.config();
 
-
 const app = express();
-
 
 connectDB();
 
 app.use(express.json());
-
+//app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(cors())
+
 app.use("/api/users", userRoutes);
+app.use("/api/artworks", artworkRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Virtual Art Gallery API");
