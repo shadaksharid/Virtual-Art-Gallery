@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "../styles/Gallery.css";
 import "../styles/app_style.css";
 import API from "../axios";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure } from "../redux/gallerySlice";
+
 
 // const sampleartwork = [
 //     {
@@ -68,25 +71,42 @@ import { Link } from "react-router-dom";
 // ];
 
  const Gallery = () => {
-    const [artworks, setArtworks] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    // const [artworks, setArtworks] = useState([]);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
+
+    const dispatch = useDispatch();
+    const {artworks, loading, error} = useSelector((state) => state.gallery);
+
+    // useEffect(() => {
+    //     const fetchArtworks = async () => {
+    //         try {
+    //           const response = await API.get("/artworks"); 
+    //           setArtworks(response.data);
+    //         } catch (err) {
+    //           console.error("Error fetching artworks:", err);
+    //           setError("Failed to fetch artworks.");
+    //         } finally {
+    //           setLoading(false);
+    //         }
+    //       };
+      
+    //       fetchArtworks();
+    // },[]);
 
     useEffect(() => {
-        const fetchArtworks = async () => {
-            try {
-              const response = await API.get("/artworks"); 
-              setArtworks(response.data);
-            } catch (err) {
-              console.error("Error fetching artworks:", err);
-              setError("Failed to fetch artworks.");
-            } finally {
-              setLoading(false);
-            }
-          };
-      
-          fetchArtworks();
-    },[]);
+      const fetchArtworks = async () => {
+        dispatch(fetchArtworksStart());
+        try{
+          const response = await API.get("/artworks");
+          dispatch(fetchArtworksSuccess(response.data));
+        }catch (err) {
+          console.error("Error fetching artworks");
+          dispatch(fetchArtworksFailure("Failed to fetch artworks"));
+        }
+      };
+      fetchArtworks();
+    },[dispatch]);
     return(
         <div className="gallery-container">
             <h2>Virtual Art Gallery</h2>
