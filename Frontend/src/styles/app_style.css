@@ -12,13 +12,13 @@ body {
     border-radius: 15px;
     background: #ffffff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-width: 800px;  /* Increased for wider screens */
+    max-width: 1000px;  
     margin-left: auto;
     margin-right: auto;
 }
 
 h1 {
-    font-size: 3.5rem;  /* Larger font size for better visibility */
+    font-size: 3.5rem; 
     color: #333;
     font-weight: bold;
     margin-bottom: 30px;
