@@ -6,6 +6,7 @@ import Gallery from "./pages/Gallery";
 import UploadArtwork from "./components/UploadArtwork";
 import { useEffect, useState } from "react";
 
+
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
@@ -16,6 +17,9 @@ function App() {
             setIsAuthenticated(true);
         }
     },[]);
+    const handleLogin = () => {
+        setIsAuthenticated(true); 
+    };
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -43,7 +47,7 @@ function App() {
             </div>
 
             <Routes>
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<Login onLogin = {handleLogin}/>} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/gallery" element={ <Gallery /> }/>
                 <Route path="/upload" element={ <UploadArtwork /> } />
