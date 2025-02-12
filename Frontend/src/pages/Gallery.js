@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Gallery.css";
 import "../styles/app_style.css";
 import API from "../axios";
@@ -77,7 +77,7 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure } from "..
 
     const dispatch = useDispatch();
     const {artworks, loading, error} = useSelector((state) => state.gallery);
-
+    const [selectedArtwork, setSelectedArtwork] = useState(null);
     // useEffect(() => {
     //     const fetchArtworks = async () => {
     //         try {
@@ -107,6 +107,16 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure } from "..
       };
       fetchArtworks();
     },[dispatch]);
+
+    const openDetailView = (art) => {
+      setSelectedArtwork(art);
+    }
+
+    const closeDetailView = () => {
+      setSelectedArtwork(null);
+    }
+
+    
     return(
         <div className="gallery-container">
             <h2>Virtual Art Gallery</h2>
@@ -117,13 +127,24 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure } from "..
 
             <div className="gallery-grid">
                 {artworks.map((art) => (
-                    <div key={art._id} className="art-card">
+                    <div key={art._id} className="art-card" onClick={() => openDetailView(art)}> 
                         <img src={art.imageUrl} alt={art.title}/>
                         <h3>{art.title}</h3>
                         <p>By {art.artist}</p>
                     </div>
                 ))}
             </div>
+            {selectedArtwork && (
+              <div className="modal-overlay" onClick={closeDetailView}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation}>
+                  <span className="close-button" onClick={closeDetailView}>&times;</span>
+                  <img src={selectedArtwork.imageUrl} alt={selectedArtwork.title}/>
+                  <h2>{selectedArtwork.title}</h2>
+                  <p><strong>Artist:</strong> {selectedArtwork.artist}</p>
+                  <p><strong>Description:</strong> {selectedArtwork.description || "No description available."}</p>
+                </div>
+              </div>
+            )}
         </div>
     );
 };
