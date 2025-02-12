@@ -19,9 +19,9 @@ const AuthForm = ({ isLogin }) => {
                 const res = await API.post("users/login",{email : formData.email, password: formData.password});
                 localStorage.setItem("token", res.data.token);
                 alert("Login successfull");
-                navigate("/gallery")
+                navigate("/gallery");
             }else{
-                await API.post("users/signup", formData);
+                await API.post("users/register", formData);
                 alert("Registration successfull");
                 navigate("/login")
             }

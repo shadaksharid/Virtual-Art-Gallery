@@ -111,10 +111,6 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure } from "..
         <div className="gallery-container">
             <h2>Virtual Art Gallery</h2>
 
-            <div>
-              <Link to="/upload" className="nav-button">Upload</Link>
-            </div>
-
             {loading && <p>Loading artworks...</p>}
             {error && <p className="error-message">{error}</p>}
             {!loading && artworks.length === 0 && <p>No artworks available.</p>}
