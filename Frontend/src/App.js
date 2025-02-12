@@ -7,12 +7,14 @@ import UploadArtwork from "./components/UploadArtwork";
 import { useEffect, useState } from "react";
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        setIsAuthenticated(!!token);
+        if(token){
+            setIsAuthenticated(true);
+        }
     },[]);
 
     const handleLogout = () => {
@@ -26,13 +28,12 @@ function App() {
 
             <div className="links"> 
             <Link to="/" className="nav-button">Home</Link> |
-            {!isAuthenticated && (
+            {!isAuthenticated ? (
                     <>
                         <Link to="/login" className="nav-button">Login</Link> |
                         <Link to="/register" className="nav-button">Register</Link>
                     </>
-                )}
-            {isAuthenticated && (
+                ) : (
                 <>
                         <Link to="/gallery" className="nav-button">Gallery</Link> |
                         <Link to="/upload" className="nav-button">Upload</Link> |
