@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../axios";
 import "../styles/auth.css";
+import { useDispatch } from "react-redux";
 
-const AuthForm = ({ isLogin }) => {
+const AuthForm = ({ isLogin, setIsAuthenticated }) => {
     const [formData, setFormData] = useState({name:"", email:"", password:""});
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handlechange = (e) => {
         setFormData({...formData, [e.target.name] : e.target.value});
@@ -18,8 +20,9 @@ const AuthForm = ({ isLogin }) => {
             if(isLogin){
                 const res = await API.post("users/login",{email : formData.email, password: formData.password});
                 localStorage.setItem("token", res.data.token);
-                alert("Login successfull");
+                alert("Login successful");
                 navigate("/gallery");
+                setIsAuthenticated(true);
             }else{
                 await API.post("users/register", formData);
                 alert("Registration successfull");
