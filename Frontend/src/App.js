@@ -13,7 +13,7 @@ function App() {
             <div className="links"> 
                 <Link to="/" className="nav-button">Home</Link> |
                 <Link to="/login" className="nav-button">Login</Link> |
-                <Link to="/register"className="nav-button">Register</Link>
+                <Link to="/register"className="nav-button">Register</Link>|
                 <Link to="/gallery" className="nav-button">Gallery</Link>|
                 <Link to="/upload" className="nav-button">Upload</Link>
             </div>
