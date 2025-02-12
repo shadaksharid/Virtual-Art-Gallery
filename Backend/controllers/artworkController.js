@@ -2,10 +2,10 @@ const Artwork = require("../models/Artwork");
 
 const addArtwork = async (req, res) => {
     try{
-        const {title, artist} = req.body;
+        const {title, artist, description} = req.body;
         const imageUrl = req.file.path;
 
-        const newArtwork = new Artwork({title, artist, imageUrl});
+        const newArtwork = new Artwork({title, artist, imageUrl, description});
         await newArtwork.save();
 
         res.status(201).json({message : "Artwork added successfully" , artwork : newArtwork});

@@ -65,6 +65,47 @@
     background-color: #ccc;
     cursor: not-allowed;
 }
+.upload-container textarea {
+    width: 100%;
+    height: 120px;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    resize: none;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background: #f4f7fb;
+}
+
+.upload-container textarea:focus {
+    border-color: #7453bb;
+    box-shadow: 0 0 8px rgba(116, 83, 187, 0.3);
+}
+
+.upload-container label {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+
+@media (min-width: 1000px) {
+    .upload-container textarea {
+        height: 140px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .upload-container textarea {
+        height: 160px;
+        font-size: 18px;
+    }
+}
+
 
 @media (min-width: 1000px) {
     .upload-container {

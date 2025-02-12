@@ -8,6 +8,7 @@ const UploadArtwork = () => {
     const [artist, setArtist] = useState("");
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [description, setDescription] = useState("");
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,6 +22,7 @@ const UploadArtwork = () => {
         formData.append("title", title);
         formData.append("artist", artist);
         formData.append("image", image);
+        formData.append("description", description);
 
         setLoading(true);
 
@@ -35,6 +37,7 @@ const UploadArtwork = () => {
             setTitle("");
             setArtist("");
             setImage(null);
+            setDescription("");
         } catch (error) {
             console.error(error);
             alert("Failed to upload artwork");
@@ -48,6 +51,7 @@ const UploadArtwork = () => {
                 <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required></input>
                 <input type="text" placeholder="Artist" value={artist} onChange={(e) => setArtist(e.target.value)} required></input>
                 <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} required></input>
+                <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
                 <button type="submit" disabled={loading}>
                     {loading? "Uploading..." : "upload"}
                 </button>
