@@ -119,7 +119,7 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure } from "..
     
     return(
         <div className="gallery-container">
-            <h2>Virtual Art Gallery</h2>
+            <h2>Art Gallery</h2>
 
             {loading && <p>Loading artworks...</p>}
             {error && <p className="error-message">{error}</p>}
