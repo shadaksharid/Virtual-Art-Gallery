@@ -35,19 +35,21 @@ const AuthForm = ({ isLogin, onLogin }) => {
     };
 
     return (
-        <div className="auth-container">
-            <h2>{isLogin ? "Login" : "Register" }</h2>
-            {error && <p className="error">{error}</p>}
+        <div className="auth-container container mt-3">
+            <div className="card p-4 mx-auto" style={{ maxWidth: "400px" }}>
+            <h2 className="text-center mb-4">{isLogin ? "Login" : "Register" }</h2>
+            {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handlesubmit}>
-                {!isLogin && <input type="text" name="name" placeholder="Full name" onChange={handlechange} required />}
-                <input type="email" name="email" placeholder="Email" onChange={handlechange} required/>
-                <input type="password" name="password" placeholder="Password" onChange={handlechange} required />
-                <button type="submit">{isLogin ? "Login" : "Signup"}</button>
+                {!isLogin && <input type="text" name="name" placeholder="Full name" onChange={handlechange} className="form-control mb-3" required />}
+                <input type="email" name="email" placeholder="Email" onChange={handlechange} className="form-control mb-3" required/>
+                <input type="password" name="password" placeholder="Password" onChange={handlechange} className="form-control mb-3" required />
+                <button type="submit" className="btn btn-primary w-100">{isLogin ? "Login" : "Signup"}</button>
             </form>
-            <p>
+            <p className="text-center mt-3">
                 {isLogin? "Don't have an account?" : "Already have an account?"}{" "}
-                <a href={isLogin? "/register": "/login"}>{isLogin? "Register" : "Login"}</a>
+                <a href={isLogin? "/register": "/login"} className="text-decoration-none">{isLogin? "Register" : "Login"}</a>
             </p>
+            </div>
         </div>
     );
 };

@@ -27,21 +27,23 @@ function App() {
         navigate("/login");
     }
     return (
-        <div className="container">
-            <center><h1>Welcome to the Virtual Art Gallery</h1></center>
+        <div className="container mt-3">
+            <center>
+                <h1 className="display-4 mb-4">Welcome to the Virtual Art Gallery</h1>
+            </center>
 
-            <div className="links"> 
-            <Link to="/" className="nav-button">Home</Link> |
+            <div className="d-flex justify-content-center mb-4"> 
+            <Link to="/" className="btn btn-outline-primary mx-2">Home</Link> |
             {!isAuthenticated ? (
                     <>
-                        <Link to="/login" className="nav-button">Login</Link> |
-                        <Link to="/register" className="nav-button">Register</Link>
+                        <Link to="/login" className="btn btn-outline-primary mx-2">Login</Link> |
+                        <Link to="/register" className="btn btn-outline-primary mx-2">Register</Link>
                     </>
                 ) : (
                 <>
-                        <Link to="/gallery" className="nav-button">Gallery</Link> |
-                        <Link to="/upload" className="nav-button">Upload</Link> |
-                        <button onClick={handleLogout} className="nav-button logout-button">Logout</button>
+                        <Link to="/gallery" className="btn btn-outline-primary mx-2">Gallery</Link> |
+                        <Link to="/upload" className="btn btn-outline-primary mx-2">Upload</Link> |
+                        <button onClick={handleLogout} className="btn btn-outline-danger mx-2">Logout</button>
                 </>
             )}
             </div>
@@ -52,9 +54,11 @@ function App() {
                 <Route path="/gallery" element={ <Gallery /> }/>
                 <Route path="/upload" element={ <UploadArtwork /> } />
             </Routes>
+            <center>
             <div className="footer">
                 <p>&copy; 2025 Virtual Art Gallery</p>
             </div>
+            </center>
         </div>
     );
 }

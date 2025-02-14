@@ -118,27 +118,31 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure } from "..
 
     
     return(
-        <div className="gallery-container">
-            <h2>Art Gallery</h2>
+        <div className="gallery-container container mt-5">
+            <h2 className="text-center mb-4">Art Gallery</h2>
 
-            {loading && <p>Loading artworks...</p>}
-            {error && <p className="error-message">{error}</p>}
-            {!loading && artworks.length === 0 && <p>No artworks available.</p>}
+            {loading && <p className="text-center">Loading artworks...</p>}
+            {error && <p className="text-center text-danger">{error}</p>}
+            {!loading && artworks.length === 0 && <p className="text-center">No artworks available.</p>}
 
-            <div className="gallery-grid">
+            <div className="row">
                 {artworks.map((art) => (
-                    <div key={art._id} className="art-card" onClick={() => openDetailView(art)}> 
+                    <div key={art._id} className="col-md-4 mb-4" onClick={() => openDetailView(art)}> 
+                    <div className="card h-100">
                         <img src={art.imageUrl} alt={art.title}/>
+                        <div className="card-body">
                         <h3>{art.title}</h3>
                         <p>By {art.artist}</p>
+                        </div>
+                    </div>
                     </div>
                 ))}
             </div>
             {selectedArtwork && (
               <div className="modal-overlay" onClick={closeDetailView}>
-                <div className="modal-content" onClick={(e) => e.stopPropagation}>
-                  <span className="close-button" onClick={closeDetailView}>&times;</span>
-                  <img src={selectedArtwork.imageUrl} alt={selectedArtwork.title}/>
+                <div className="modal-content card p-4" onClick={(e) => e.stopPropagation}>
+                  <span className="close-button btn btn-danger" onClick={closeDetailView}>&times;</span>
+                  <img src={selectedArtwork.imageUrl} alt={selectedArtwork.title} className="img-fluid mb-3"/>
                   <h2>{selectedArtwork.title}</h2>
                   <p><strong>Artist:</strong> {selectedArtwork.artist}</p>
                   <p><strong>Description:</strong> {selectedArtwork.description || "No description available."}</p>

@@ -46,16 +46,19 @@ const UploadArtwork = () => {
         }
     };
     return(
-        <div className="upload-container">
+        <div className="upload-container container mt-5">
+            <div className="card p-4 mx-auto" style={{ maxWidth: "600px" }}>
+            <h2 className="text-center mb-4">Upload Artwork</h2>
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required></input>
-                <input type="text" placeholder="Artist" value={artist} onChange={(e) => setArtist(e.target.value)} required></input>
-                <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} required></input>
-                <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
-                <button type="submit" disabled={loading}>
+                <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} className="form-control mb-3" required></input>
+                <input type="text" placeholder="Artist" value={artist} onChange={(e) => setArtist(e.target.value)} className="form-control mb-3" required></input>
+                <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} className="form-control mb-3" required></input>
+                <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} className="form-control mb-3" rows="4"></textarea>
+                <button type="submit" className="btn btn-primary w-100" disabled={loading}>
                     {loading? "Uploading..." : "upload"}
                 </button>
             </form>
+            </div>
         </div>
     );
 };
