@@ -24,4 +24,4 @@ const getArtworks = async (req, res) => {
 };
 
 
-module.exports = {addArtwork, getArtworks, getArtworkById};
+module.exports = {addArtwork, getArtworks};
