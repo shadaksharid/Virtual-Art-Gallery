@@ -5,6 +5,5 @@ const {addArtwork, getArtworks, getArtworkById} = require("../controllers/artwor
 
 router.post("/upload", upload.single('image'), addArtwork);
 router.get("/", getArtworks);
-router.get("/:id", getArtworkById);
 
 module.exports = router;
