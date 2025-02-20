@@ -35,4 +35,18 @@ const getArtworkById = async (req, res) => {
     }
 };
 
-module.exports = {addArtwork, getArtworks, getArtworkById};
+const likeArtwork = async (req, res) => {
+    try{
+        const artwork = await Artwork.findById(req.params.id);
+        if(!artwork){
+            return res.status(404).json({message: "Artwork not found"})
+        }
+        artwork.likes += 1;
+        await artwork.save();
+
+        res.status(200).json({message: "art liked"})
+    }catch(error){
+        res.status(500).json({error: "error message"});
+    }
+}
+module.exports = {addArtwork, getArtworks, getArtworkById, likeArtwork};

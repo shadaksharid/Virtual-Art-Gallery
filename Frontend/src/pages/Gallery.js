@@ -5,7 +5,7 @@ import API from "../axios";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure } from "../redux/gallerySlice";
-
+import {likeArtwork} from "../redux/galleryActions"
 
 // const sampleartwork = [
 //     {
@@ -116,6 +116,11 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure } from "..
       setSelectedArtwork(null);
     }
 
+    const handleLike = (id) => {
+      console.log(`Liking artwork with ID: ${id}`); 
+      dispatch(likeArtwork(id));
+  };
+
     
     return(
         <div className="gallery-container container mt-5">
@@ -133,6 +138,22 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure } from "..
                         <div className="card-body">
                         <h3>{art.title}</h3>
                         <p>By {art.artist}</p>
+                        <p>Likes: {art.likes}</p>
+                        <button 
+                        className="btn btn-primary" 
+                        onClick={(e) => {
+                         e.stopPropagation();
+                        dispatch(likeArtwork(art._id));
+                        }}
+                        >
+                          ❤ {art.likes}
+                        </button>
+                        <button 
+                            className="btn btn-secondary ml-2" 
+                            onClick={() => openDetailView(art)}
+                        >
+                            View Details
+                        </button>
                         </div>
                     </div>
                     </div>
