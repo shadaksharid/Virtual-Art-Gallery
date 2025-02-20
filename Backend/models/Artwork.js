@@ -16,10 +16,6 @@ const ArtworkSchema = new mongoose.Schema({
     description: {  
         type: String,
         required: false
-    },
-    likes : {
-        type: Number,
-        default: 0
     }
 })
 

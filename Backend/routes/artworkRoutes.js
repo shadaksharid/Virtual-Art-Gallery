@@ -6,6 +6,4 @@ const {addArtwork, getArtworks, getArtworkById, likeArtwork} = require("../contr
 router.post("/upload", upload.single('image'), addArtwork);
 router.get("/", getArtworks);
 router.get("/:id", getArtworkById);
-router.put("/:id/like", likeArtwork);
-
 module.exports = router;

@@ -21,18 +21,8 @@ const gallerySlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        likeArtworkSuccess : (state, action) => {
-            const { id, likes } = action.payload;
-            const artwork = state.artworks.find((art) => art._id === id);
-            if (artwork) {
-                artwork.likes = likes; 
-            }
-            state.artworks = state.artworks.map((art) =>
-                art._id === id ? { ...art, likes } : art
-            );
-        },
     },
 });
 
-export const {fetchArtworksStart, fetchArtworksSuccess, fetchArtworksFailure, likeArtworkSuccess} = gallerySlice.actions;
+export const {fetchArtworksStart, fetchArtworksSuccess, fetchArtworksFailure} = gallerySlice.actions;
 export default gallerySlice.reducer;
