@@ -10,7 +10,7 @@ const register = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name, email, password } = req.body;
+  const { name, email, password, bio, gender } = req.body;
 
   try {
     
@@ -23,7 +23,9 @@ const register = async (req, res) => {
     user = new User({
       name,
       email,
-      password
+      password,
+      bio: bio || "",
+      gender: gender || ""
     });
 
     
@@ -80,4 +82,36 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    const { bio, gender } = req.body;
+
+    if (bio !== undefined) user.bio = bio;
+    if (gender !== undefined) user.gender = gender;
+
+    await user.save();
+    res.json({ msg: "Profile updated successfully", user });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+const getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password"); 
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+module.exports = { register, login, updateProfile, getUserProfile };

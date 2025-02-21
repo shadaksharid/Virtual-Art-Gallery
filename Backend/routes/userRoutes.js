@@ -1,7 +1,8 @@
 
 const express = require("express");
-const { register, login } = require("../controllers/userController");
+const { register, login, updateProfile, getUserProfile } = require("../controllers/userController");
 const { body } = require("express-validator");
+const auth = require("../middeware/authMiddleware");
 const router = express.Router();
 
 
@@ -25,4 +26,15 @@ router.post(
   login
 );
 
+router.put(
+  "/profile",
+  auth, 
+  [
+    body("bio").optional().isString(),
+    body("gender").optional().isIn(["male", "female"])
+  ],
+  updateProfile
+);
+
+router.get("/profile", auth, getUserProfile);
 module.exports = router;

@@ -1,6 +1,7 @@
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./pages/UserProfile";
 import '../src/styles/app_style.css';
 import Gallery from "./pages/Gallery";
 import UploadArtwork from "./components/UploadArtwork";
@@ -43,6 +44,7 @@ function App() {
                 <>
                         <Link to="/gallery" className="btn btn-outline-primary mx-2">Gallery</Link> |
                         <Link to="/upload" className="btn btn-outline-primary mx-2">Upload</Link> |
+                        <Link to="/profile" className="btn btn-outline-primary mx-2">Profile</Link> |
                         <button onClick={handleLogout} className="btn btn-outline-danger mx-2">Logout</button>
                 </>
             )}
@@ -53,6 +55,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/gallery" element={ <Gallery /> }/>
                 <Route path="/upload" element={ <UploadArtwork /> } />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
             <center>
             <div className="footer">
