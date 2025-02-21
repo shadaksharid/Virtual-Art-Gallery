@@ -22,7 +22,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["male", "female", ""],
     default: ""
-  }
+  },
+  likedArtworks: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Artwork"
+  }]
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const User = require("../models/User");
+const Artwork = require("../models/Artwork");
 
 
 const register = async (req, res) => {
@@ -104,7 +105,7 @@ const updateProfile = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password"); 
+    const user = await User.findById(req.user.id).select("-password").populate("likedArtworks"); 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
@@ -114,4 +115,29 @@ const getUserProfile = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
-module.exports = { register, login, updateProfile, getUserProfile };
+
+const getUserLikedArtworks = async (req, res) => {
+  try{
+    const user = await User.findById(req.user.id).populate("likedArtworks");
+    if(!user){
+      return res.status(404).json({message: "User not found"});
+    }
+    res.json(user.likedArtworks);
+  }catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getUserComments = async (req,res) => {
+  try{
+    const artworks = await Artwork.find({"comments.user" : req.user.id}, "title comments");
+    const userComments = artworks.map(artwork => ({
+      artworkTitle : artwork.title,
+      comments : artwork.comments.filter(comment => comment.user.toString() === req.user.id)
+    }));
+    res.json(userComments);
+  }catch (error) {
+    res.status(500).json({ error: error.message });
+}
+}
+module.exports = { register, login, updateProfile, getUserProfile, getUserLikedArtworks, getUserComments };
