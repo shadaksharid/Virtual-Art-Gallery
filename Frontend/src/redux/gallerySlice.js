@@ -21,8 +21,20 @@ const gallerySlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        likeArtworkSuccess: (state, action) => {
+            const updatedArtwork = action.payload;
+            state.artworks = state.artworks.map((art) => 
+                art._id === updatedArtwork._id ? updatedArtwork : art
+            );
+        },
+        commentArtworkSuccess: (state, action) => {
+            const updatedArtwork = action.payload;
+            state.artworks = state.artworks.map((art) =>
+                art._id === updatedArtwork._id ? updatedArtwork : art
+            );
+        },
     },
 });
 
-export const {fetchArtworksStart, fetchArtworksSuccess, fetchArtworksFailure} = gallerySlice.actions;
+export const {fetchArtworksStart, fetchArtworksSuccess, fetchArtworksFailure, likeArtworkSuccess, commentArtworkSuccess} = gallerySlice.actions;
 export default gallerySlice.reducer;

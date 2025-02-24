@@ -1,17 +1,19 @@
 import React,{useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserProfile, updateUserProfile } from "../redux/userSlice";
+import { fetchUserProfile, updateUserProfile,fetchUserLikedArtworks, fetchUserComments } from "../redux/userSlice";
 import "../styles/profile.css";
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const {user, status, error} = useSelector((state) => state.user);
+    const {user, likedArtworks, comments,status, error} = useSelector((state) => state.user);
 
     const [bio, setBio] = useState("");
     const [gender, setGender] = useState("");
 
     useEffect(() => {
         dispatch(fetchUserProfile());
+        dispatch(fetchUserLikedArtworks());
+        dispatch(fetchUserComments());
     }, [dispatch]);
 
     useEffect(() => {
@@ -57,6 +59,37 @@ const Profile = () => {
           <button onClick={handleUpdateProfile} className="btn btn-primary w-100">
             Update Profile
           </button>
+                <h3 className="mt-4">Liked Artworks</h3>
+                <div className="row">
+                    {likedArtworks.length > 0 ? (
+                        likedArtworks.map((art) => (
+                            <div key={art._id} className="col-md-4 mb-4">
+                                <div className="card h-100">
+                                    <img src={art.imageUrl} alt={art.title} className="card-img-top"/>
+                                    <div className="card-body">
+                                        <h5>{art.title}</h5>
+                                        <p>By {art.artist}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No liked artworks.</p>
+                    )}
+                </div>
+                <h3 className="mt-4">My Comments</h3>
+                {comments.length > 0 ? (
+                    comments.map((commentData, index) => (
+                        <div key={index} className="comment-section p-3 mb-2 border">
+                            <h5>{commentData.artworkTitle}</h5>
+                            {commentData.comments.map((comment, idx) => (
+                                <p key={idx}>"{comment.text}"</p>
+                            ))}
+                        </div>
+                    ))
+                ) : (
+                    <p>No comments yet.</p>
+                )}
         </div>
       </div>
     );

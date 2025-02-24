@@ -31,10 +31,42 @@ export const updateUserProfile = createAsyncThunk(
     }
 );
 
+export const fetchUserLikedArtworks = createAsyncThunk(
+    "user/fetchUserLikedArtworks",
+    async (_, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await API.get("/users/profile/liked-artworks", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return res.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const fetchUserComments = createAsyncThunk(
+    "user/fetchUserComments",
+    async (_, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await API.get("/users/profile/comments", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return res.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 const userSlice = createSlice({
     name:"user",
     initialState:{
         user: null,
+        likedArtworks: [],
+        comments: [],
         status:"idle",
         error:null
     },
@@ -59,6 +91,12 @@ const userSlice = createSlice({
         })
         .addCase(updateUserProfile.fulfilled, (state, action) => {
             state.user = action.payload.user;
+        })
+        .addCase(fetchUserLikedArtworks.fulfilled, (state, action) => {
+            state.likedArtworks = action.payload;
+        })
+        .addCase(fetchUserComments.fulfilled, (state, action) => {
+            state.comments = action.payload;
         })
     }
 });
