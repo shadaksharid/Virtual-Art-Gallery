@@ -63,12 +63,12 @@ const Profile = () => {
                 <div className="row">
                     {likedArtworks.length > 0 ? (
                         likedArtworks.map((art) => (
-                            <div key={art._id} className="col-md-4 mb-4">
+                            <div key={art._id} className="col-6 col-sm-6 col-md-4 col-lg-3">
                                 <div className="card h-100">
-                                    <img src={art.imageUrl} alt={art.title} className="card-img-top"/>
+                                    <img src={art.imageUrl} alt={art.title} className="card-img-top img-fluid"/>
                                     <div className="card-body">
-                                        <h5>{art.title}</h5>
-                                        <p>By {art.artist}</p>
+                                        <h5 className="card-title">{art.title}</h5>
+                                        <p className="card-text">By {art.artist}</p>
                                     </div>
                                 </div>
                             </div>

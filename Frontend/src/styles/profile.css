@@ -55,3 +55,10 @@ textarea {
     background-color: #bdc3c7;
     cursor: not-allowed;
 }
+
+.card-img-top {
+    height: 200px; 
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+    width: 100%;
+}
