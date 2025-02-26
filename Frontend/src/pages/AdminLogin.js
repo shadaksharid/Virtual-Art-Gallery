@@ -3,7 +3,7 @@ import API from "../axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/auth.css";
 
-const AdminLogin = () => {
+const AdminLogin = ({ onLogin }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -16,6 +16,7 @@ const AdminLogin = () => {
         try {
             const res = await API.post("admins/admin-login", { email, password });
             localStorage.setItem("adminToken", res.data.token); 
+            onLogin();
             navigate("/dashboard"); 
         } catch (err) {
             setError("Invalid email or password");

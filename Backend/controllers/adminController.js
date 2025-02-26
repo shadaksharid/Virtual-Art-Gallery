@@ -1,4 +1,5 @@
 const Admin = require('../models/Admin');
+const Artwork = require('../models/Artwork');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require("express-validator");
@@ -6,7 +7,7 @@ const { validationResult } = require("express-validator");
 const loginAdmin = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ errors: errors.array() });
     }
     try {
         const { email, password } = req.body;
@@ -20,12 +21,50 @@ const loginAdmin = async (req, res) => {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        const token = jwt.sign({id: admin.id},process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: admin.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
         res.status(200).json({ message: "Login successful", token });
     } catch (error) {
         res.status(500).json({ error: "Server error" });
     }
 };
+const getPendingArtworks = async (req, res) => {
+    try {
+        const artworks = await Artwork.find({ status: "pending" });
+        res.json(artworks);
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+};
 
-module.exports = { loginAdmin};
+const approveArtwork = async (req, res) => {
+    try {
+        const artwork = await Artwork.findById(req.params.id);
+        if (!artwork) {
+            return res.status(404).json({ message: "Artwork not found" });
+        }
+
+        artwork.status = "approved";
+        await artwork.save();
+        res.json({ message: "Artwork approved successfully", artwork });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const rejectArtwork = async (req, res) => {
+    try {
+        const artwork = await Artwork.findById(req.params.id);
+        if (!artwork) {
+            return res.status(404).json({ message: "Artwork not found" });
+        }
+
+        artwork.status = "rejected";
+        await artwork.save();
+        res.json({ message: "Artwork rejected", artwork });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = { loginAdmin, approveArtwork, rejectArtwork, getPendingArtworks };

@@ -1,28 +1,33 @@
 const mongoose = require('mongoose');
 
 const ArtworkSchema = new mongoose.Schema({
-    title:{
-        type:String,
-        required:true
+    title: {
+        type: String,
+        required: true
     },
-    artist:{
-        type:String,
-        required:true
+    artist: {
+        type: String,
+        required: true
     },
-    imageUrl:{
-        type:String,
-        required:true
+    imageUrl: {
+        type: String,
+        required: true
     },
-    description: {  
+    description: {
         type: String,
         required: false
+    },
+    status: {
+        type: String,
+        enum: ["pending", "approved", "rejected"],
+        default: "pending"
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }],
     comments: [{
-        user:{
+        user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         },
@@ -35,6 +40,6 @@ const ArtworkSchema = new mongoose.Schema({
             default: Date.now
         }
     }]
-})
+});
 
 module.exports = mongoose.model("Artwork", ArtworkSchema);

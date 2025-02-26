@@ -1,29 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    artworks : [],
-    loading : false,
-    error : null,
-}
+    artworks: [],
+    loading: false,
+    error: null,
+};
 
 const gallerySlice = createSlice({
-    name : "gallery",
+    name: "gallery",
     initialState,
-    reducers : {
-        fetchArtworksStart : (state) => {
+    reducers: {
+        fetchArtworksStart: (state) => {
             state.loading = true;
         },
-        fetchArtworksSuccess : (state, action) => {
+        fetchArtworksSuccess: (state, action) => {
             state.loading = false;
             state.artworks = action.payload;
         },
-        fetchArtworksFailure : (state, action) => {
+        fetchArtworksFailure: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
         likeArtworkSuccess: (state, action) => {
             const updatedArtwork = action.payload;
-            state.artworks = state.artworks.map((art) => 
+            state.artworks = state.artworks.map((art) =>
                 art._id === updatedArtwork._id ? updatedArtwork : art
             );
         },
@@ -33,8 +33,23 @@ const gallerySlice = createSlice({
                 art._id === updatedArtwork._id ? updatedArtwork : art
             );
         },
+        approveArtworkSuccess: (state, action) => {
+            state.artworks = state.artworks.filter((art) => art._id !== action.payload);
+        },
+        rejectArtworkSuccess: (state, action) => {
+            state.artworks = state.artworks.filter((art) => art._id !== action.payload);
+        },
     },
 });
 
-export const {fetchArtworksStart, fetchArtworksSuccess, fetchArtworksFailure, likeArtworkSuccess, commentArtworkSuccess} = gallerySlice.actions;
+export const {
+    fetchArtworksStart,
+    fetchArtworksSuccess,
+    fetchArtworksFailure,
+    likeArtworkSuccess,
+    commentArtworkSuccess,
+    approveArtworkSuccess,
+    rejectArtworkSuccess
+} = gallerySlice.actions;
+
 export default gallerySlice.reducer;

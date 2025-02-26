@@ -16,7 +16,7 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure,likeArtwor
       const fetchArtworks = async () => {
         dispatch(fetchArtworksStart());
         try{
-          const response = await API.get("/artworks");
+          const response = await API.get("/artworks?status=approved");
           dispatch(fetchArtworksSuccess(response.data));
         }catch (err) {
           console.error("Error fetching artworks");
@@ -55,74 +55,85 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure,likeArtwor
     }
 };
     return(
-        <div className="gallery-container container mt-5">
-            <h2 className="text-center mb-4">Art Gallery</h2>
+    <div className="gallery-container container mt-5">
+    <h2 className="text-center mb-4">Art Gallery</h2>
 
-            {loading && <p className="text-center">Loading artworks...</p>}
-            {error && <p className="text-center text-danger">{error}</p>}
-            {!loading && artworks.length === 0 && <p className="text-center">No artworks available.</p>}
+    {loading && <p className="text-center">Loading artworks...</p>}
+    {error && <p className="text-center text-danger">{error}</p>}
+    {!loading && artworks.length === 0 && <p className="text-center">No artworks available.</p>}
 
-            <div className="row">
-                {artworks.map((art) => (
-                    <div key={art._id} className="col-md-4 mb-4" onClick={() => openDetailView(art)}> 
-                    <div className="card h-100">
-                        <img src={art.imageUrl} alt={art.title}/>
-                        <div className="card-body">
-                        <h3>{art.title}</h3>
-                        <p>By {art.artist}</p>  
-                        <button className="btn btn-primary mt-2" onClick={(e) => {e.stopPropagation(); handleLike(art._id);}}>
-                            ❤️ {art.likes.length}
-                        </button>  
-                        </div>
+    <div className="row">
+        {artworks.map((art) => (
+            <div key={art._id} className="col-md-4 mb-4" onClick={() => openDetailView(art)}>
+                <div className="card h-100">
+                    <div className="card-image-container">
+                        <img src={art.imageUrl} alt={art.title} className="card-img" />
                     </div>
-                    </div>
-                ))}
-            </div>
-            {selectedArtwork && (
-              <div className="modal-overlay" onClick={closeDetailView}>
-                <div className="modal-content card p-4" onClick={(e) => e.stopPropagation}>
-                  <span className="close-button btn btn-danger" onClick={closeDetailView}>&times;</span>
-                  <img src={selectedArtwork.imageUrl} alt={selectedArtwork.title} className="img-fluid mb-3"/>
-                  <h2>{selectedArtwork.title}</h2>
-                  <p><strong>Artist:</strong> {selectedArtwork.artist}</p>
-                  <p><strong>Description:</strong> {selectedArtwork.description || "No description available."}</p>
-                  <button className="btn btn-primary mb-3" onClick={() => handleLike(selectedArtwork._id)}>
-                            ❤️ {selectedArtwork.likes.length}
-                  </button>
-
-                  <div className="comments-section" onClick={(e) => e.stopPropagation()}>
-                      <h4>Comments</h4>
-                      <ul className="list-group">
-                        {selectedArtwork.comments.map((comment, index) => (
-                            <li key={index} className="list-group-item">
-                              <strong>{comment.user.name}:</strong> {comment.text}
-                            </li>
-                        ))}
-                      </ul>
-                      <div className="mt-3">
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Add a comment..."
-                          value={commentText}
-                          onChange={(e) => setCommentText(e.target.value)}
-                          onClick={(e) => e.stopPropagation()}
-                        />
-                        <button 
-                          className="btn btn-success mt-2" 
-                          onClick={(e) => {
-                            e.stopPropagation(); 
-                            handleComment(selectedArtwork._id);
-                          }}
+                    <div className="card-body">
+                        <h3 className="card-title">{art.title}</h3>
+                        <p className="card-artist">By {art.artist}</p>
+                        <button
+                            className="btn btn-like"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleLike(art._id);
+                            }}
                         >
-                          Post Comment
+                            ❤️ {art.likes.length}
                         </button>
-                      </div>
                     </div>
                 </div>
-              </div>
-            )}
+            </div>
+        ))}
+    </div>
+
+    {selectedArtwork && (
+        <div className="modal-overlay" onClick={closeDetailView}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <span className="close-button" onClick={closeDetailView}>&times;</span>
+                <img src={selectedArtwork.imageUrl} alt={selectedArtwork.title} className="modal-image" />
+                <h2 className="modal-title">{selectedArtwork.title}</h2>
+                <p className="modal-artist"><strong>Artist:</strong> {selectedArtwork.artist}</p>
+                <p className="modal-description"><strong>Description:</strong> {selectedArtwork.description || "No description available."}</p>
+                <button
+                    className="btn btn-like"
+                    onClick={() => handleLike(selectedArtwork._id)}
+                >
+                    ❤️ {selectedArtwork.likes.length}
+                </button>
+
+                <div className="comments-section">
+                    <h4>Comments</h4>
+                    <ul className="comments-list">
+                        {selectedArtwork.comments.map((comment, index) => (
+                            <li key={index} className="comment-item">
+                                <strong>{comment.user.name}:</strong> {comment.text}
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="comment-input-container">
+                        <input
+                            type="text"
+                            className="comment-input"
+                            placeholder="Add a comment..."
+                            value={commentText}
+                            onChange={(e) => setCommentText(e.target.value)}
+                        />
+                        <button
+                            className="btn btn-comment"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleComment(selectedArtwork._id);
+                            }}
+                        >
+                            Post Comment
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
+        )}
+    </div>
     );
 };
 

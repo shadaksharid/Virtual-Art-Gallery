@@ -1,5 +1,4 @@
 import { useState } from "react";
-//import { uploadArtwork } from "../axios";
 import API from "../axios";
 import "../styles/upload.css"
 
@@ -31,7 +30,7 @@ const UploadArtwork = () => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            alert("Artwork uploaded successfully");
+            alert("Artwork sent for Approval");
             console.log(res.data);
 
             setTitle("");
@@ -48,14 +47,14 @@ const UploadArtwork = () => {
     return(
         <div className="upload-container container mt-5">
             <div className="card p-4 mx-auto" style={{ maxWidth: "600px" }}>
-            <h2 className="text-center mb-4">Upload Artwork</h2>
+            <h2 className="text-center mb-4">Submit Artwork</h2>
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} className="form-control mb-3" required></input>
                 <input type="text" placeholder="Artist" value={artist} onChange={(e) => setArtist(e.target.value)} className="form-control mb-3" required></input>
                 <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} className="form-control mb-3" required></input>
                 <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} className="form-control mb-3" rows="4"></textarea>
                 <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-                    {loading? "Uploading..." : "upload"}
+                    {loading? "Submitting..." : "Submit"}
                 </button>
             </form>
             </div>

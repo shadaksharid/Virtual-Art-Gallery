@@ -15,12 +15,5 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-export const uploadArtwork = (formData) => {
-  return API.post("/artworks/upload", formData, {
-    headers : {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-};
 
 export default API;

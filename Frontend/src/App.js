@@ -24,12 +24,14 @@ function App() {
         if (adminToken) {
             setIsAdmin(true);
         }
-    }, []);
+    }, [isAuthenticated, isAdmin]);
 
     const handleLogin = () => {
         setIsAuthenticated(true);
     };
-
+    const handleAdminLogin = () => {
+        setIsAdmin(true);
+    };
     const handleLogout = () => {
         localStorage.removeItem("token");
         setIsAuthenticated(false);
@@ -44,59 +46,32 @@ function App() {
 
     return (
         <div className="container mt-3">
-            <center>
-                <h1 className="display-4 mb-4">Welcome to the Virtual Art Gallery</h1>
-            </center>
+        <h1 className="display-4">Welcome to the Virtual Art Gallery</h1>
 
-            <div className="d-flex justify-content-center mb-4">
-                <Link to="/" className="btn btn-outline-primary mx-2">
-                    Home
-                </Link>{" "}
-                |
-                {!isAuthenticated && !isAdmin ? (
-                    <>
-                        <Link to="/login" className="btn btn-outline-primary mx-2">
-                            Login
-                        </Link>{" "}
-                        |
-                        <Link to="/register" className="btn btn-outline-primary mx-2">
-                            Register
-                        </Link>{" "}
-                        |
-                        <Link to="/admin-login" className="btn btn-outline-dark mx-2">
-                            Admin Login
-                        </Link>
-                    </>
-                ) : isAuthenticated ? (
-                    <>
-                        <Link to="/gallery" className="btn btn-outline-primary mx-2">
-                            Gallery
-                        </Link>{" "}
-                        |
-                        <Link to="/upload" className="btn btn-outline-primary mx-2">
-                            Upload
-                        </Link>{" "}
-                        |
-                        <Link to="/profile" className="btn btn-outline-primary mx-2">
-                            Profile
-                        </Link>{" "}
-                        |
-                        <button onClick={handleLogout} className="btn btn-outline-danger mx-2">
-                            Logout
-                        </button>
-                    </>
-                ) : isAdmin ? (
-                    <>
-                        <Link to="/dashboard" className="btn btn-outline-primary mx-2">
-                            Admin Panel
-                        </Link>{" "}
-                        |
-                        <button onClick={handleAdminLogout} className="btn btn-outline-danger mx-2">
-                            Logout
-                        </button>
-                    </>
-                ) : null}
-            </div>
+        {/* Navbar Section */}
+        <div className="navbar-container">
+        <Link to="/" className="btn btn-outline-primary">Home</Link>
+
+        {!isAuthenticated && !isAdmin ? (
+            <>
+                <Link to="/login" className="btn btn-outline-primary">Login</Link>
+                <Link to="/register" className="btn btn-outline-primary">Register</Link>
+                <Link to="/admin-login" className="btn btn-outline-dark">Admin Login</Link>
+            </>
+        ) : isAuthenticated ? (
+            <>
+                <Link to="/gallery" className="btn btn-outline-primary">Gallery</Link>
+                <Link to="/upload" className="btn btn-outline-primary">Upload</Link>
+                <Link to="/profile" className="btn btn-outline-primary">Profile</Link>
+                <button onClick={handleLogout} className="btn btn-outline-danger">Logout</button>
+            </>
+        ) : isAdmin ? (
+            <>
+                <Link to="/dashboard" className="btn btn-outline-primary">Admin Panel</Link>
+                <button onClick={handleAdminLogout} className="btn btn-outline-danger">Logout</button>
+            </>
+        ) : null}
+        </div>
 
             <Routes>
                 <Route path="/login" element={<Login onLogin={handleLogin} />} />
@@ -105,14 +80,14 @@ function App() {
                 <Route path="/upload" element={<UploadArtwork />} />
                 <Route path="/profile" element={<Profile />} />
 
-                <Route path="/admin-login" element={<AdminLogin />} />
+                <Route path="/admin-login" element={<AdminLogin onLogin={handleAdminLogin} />} />
                 <Route path="/dashboard" element={<AdminDashboard />} />
             </Routes>
 
             <center>
-                <div className="footer">
-                    <p>&copy; 2025 Virtual Art Gallery</p>
-                </div>
+            <div className="footer">
+                <p>&copy; 2025 Virtual Art Gallery</p>
+            </div>
             </center>
         </div>
     );
