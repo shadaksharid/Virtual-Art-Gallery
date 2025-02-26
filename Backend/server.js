@@ -2,6 +2,7 @@ const express = require("express");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const artworkRoutes = require("./routes/artworkRoutes");
+const adminRoutes = require("./routes/adminRoutes")
 const dotenv = require("dotenv");
 const cors = require("cors"); 
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cors())
 
 app.use("/api/users", userRoutes);
 app.use("/api/artworks", artworkRoutes);
+app.use('/api/admins', adminRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Virtual Art Gallery API");
