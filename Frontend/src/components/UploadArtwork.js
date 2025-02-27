@@ -28,6 +28,7 @@ const UploadArtwork = () => {
         try {
             const res = await API.post("/artworks/upload", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
+                Authorization: `Bearer ${localStorage.getItem("token")}`
             });
 
             alert("Artwork sent for Approval");

@@ -8,6 +8,7 @@ import UploadArtwork from "./components/UploadArtwork";
 import { useEffect, useState } from "react";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import Notifications from "./components/Notifications";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -48,25 +49,28 @@ function App() {
         <div className="container mt-3">
         <h1 className="display-4">Welcome to the Virtual Art Gallery</h1>
 
-        {/* Navbar Section */}
+
         <div className="navbar-container">
-        <Link to="/" className="btn btn-outline-primary">Home</Link>
 
         {!isAuthenticated && !isAdmin ? (
-            <>
+            <> 
+                <Link to="/" className="btn btn-outline-primary">Home</Link>
                 <Link to="/login" className="btn btn-outline-primary">Login</Link>
                 <Link to="/register" className="btn btn-outline-primary">Register</Link>
                 <Link to="/admin-login" className="btn btn-outline-dark">Admin Login</Link>
             </>
         ) : isAuthenticated ? (
             <>
+                <Link to="/" className="btn btn-outline-primary">Home</Link>
                 <Link to="/gallery" className="btn btn-outline-primary">Gallery</Link>
                 <Link to="/upload" className="btn btn-outline-primary">Upload</Link>
                 <Link to="/profile" className="btn btn-outline-primary">Profile</Link>
+                <Link to="/notifications" className="btn btn-outline-primary">Notifications</Link>
                 <button onClick={handleLogout} className="btn btn-outline-danger">Logout</button>
             </>
         ) : isAdmin ? (
             <>
+                <Link to="/" className="btn btn-outline-primary">Home</Link>
                 <Link to="/dashboard" className="btn btn-outline-primary">Admin Panel</Link>
                 <button onClick={handleAdminLogout} className="btn btn-outline-danger">Logout</button>
             </>
@@ -79,6 +83,7 @@ function App() {
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/upload" element={<UploadArtwork />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/notifications" element={<Notifications/>}/>
 
                 <Route path="/admin-login" element={<AdminLogin onLogin={handleAdminLogin} />} />
                 <Route path="/dashboard" element={<AdminDashboard />} />

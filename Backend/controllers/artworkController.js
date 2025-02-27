@@ -5,13 +5,15 @@ const addArtwork = async (req, res) => {
     try {
         const { title, artist, description } = req.body;
         const imageUrl = req.file.path;
+        const userId = req.user.id;
 
         const newArtwork = new Artwork({
             title,
             artist,
             imageUrl,
             description,
-            status: "pending" 
+            status: "pending" ,
+            user: userId
         });
         await newArtwork.save();
 

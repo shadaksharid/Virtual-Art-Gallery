@@ -3,6 +3,7 @@ const Artwork = require('../models/Artwork');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require("express-validator");
+const {sendNotification} = require("../notificationService");
 
 const loginAdmin = async (req, res) => {
     const errors = validationResult(req);
@@ -39,13 +40,14 @@ const getPendingArtworks = async (req, res) => {
 
 const approveArtwork = async (req, res) => {
     try {
-        const artwork = await Artwork.findById(req.params.id);
+        const artwork = await Artwork.findById(req.params.id).populate("user");
         if (!artwork) {
             return res.status(404).json({ message: "Artwork not found" });
         }
 
         artwork.status = "approved";
         await artwork.save();
+        await sendNotification(artwork.user.id, `Your artwork "${artwork.title}" has been approved.`);
         res.json({ message: "Artwork approved successfully", artwork });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -54,13 +56,14 @@ const approveArtwork = async (req, res) => {
 
 const rejectArtwork = async (req, res) => {
     try {
-        const artwork = await Artwork.findById(req.params.id);
+        const artwork = await Artwork.findById(req.params.id).populate("user");
         if (!artwork) {
             return res.status(404).json({ message: "Artwork not found" });
         }
 
         artwork.status = "rejected";
         await artwork.save();
+        await sendNotification(artwork.user.id, `Your artwork "${artwork.title}" has been rejected.`);
         res.json({ message: "Artwork rejected", artwork });
     } catch (error) {
         res.status(500).json({ error: error.message });
