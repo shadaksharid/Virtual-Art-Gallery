@@ -25,9 +25,18 @@ const addArtwork = async (req, res) => {
 
 const getArtworks = async (req, res) => {
     try {
-        const artworks = await Artwork.find({ status: "approved" }) 
+        const {title, artist} = req.query;
+        const filter = {status : "approved"};
+        if(title) {
+            filter.title = {$regex: title, $options: "i"};
+        }
+        if(artist){
+            filter.artist = {$regex: artist, $options: "i"};
+        }
+        const artworks = await Artwork.find(filter) 
             .populate("likes", "name")
-            .populate("comments.user", "name");
+            .populate("comments.user", "name")
+            .populate("user", "name");
         res.status(200).json(artworks);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -59,7 +68,7 @@ const likeArtwork = async (req, res) => {
         const userId = req.user.id;
         const artworkId = req.params.id;
 
-        const artwork = await Artwork.findById(artworkId);
+        const artwork = await Artwork.findById(artworkId).populate("user", "name");
         if (!artwork || artwork.status !== "approved") {
             return res.status(404).json({ message: "Artwork not found or not approved yet" });
         }
@@ -94,7 +103,7 @@ const commentOnArtwork = async (req, res) => {
             return res.status(400).json({ message: "Comment text required" });
         }
 
-        const artwork = await Artwork.findById(artworkId);
+        const artwork = await Artwork.findById(artworkId).populate("user", "name");
         if (!artwork || artwork.status !== "approved") {
             return res.status(404).json({ message: "Artwork not found or not approved yet" });
         }

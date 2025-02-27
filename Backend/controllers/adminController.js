@@ -31,7 +31,7 @@ const loginAdmin = async (req, res) => {
 };
 const getPendingArtworks = async (req, res) => {
     try {
-        const artworks = await Artwork.find({ status: "pending" });
+        const artworks = await Artwork.find({ status: "pending" }).populate("user", "name");;
         res.json(artworks);
     } catch (error) {
         res.status(500).json({ message: "Server error" });

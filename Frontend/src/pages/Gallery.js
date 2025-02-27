@@ -11,21 +11,28 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure,likeArtwor
     const {artworks, loading, error} = useSelector((state) => state.gallery);
     const [selectedArtwork, setSelectedArtwork] = useState(null);
     const [commentText, setCommentText] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filterArtist, setFilterArtist] = useState("");
+
 
     useEffect(() => {
+      fetchArtworks();
+    }, [searchQuery, filterArtist]);
+
       const fetchArtworks = async () => {
         dispatch(fetchArtworksStart());
         try{
-          const response = await API.get("/artworks?status=approved");
+          const response = await API.get("/artworks",{params:{
+            status: "approved",
+            title: searchQuery,
+            artist: filterArtist
+          }});
           dispatch(fetchArtworksSuccess(response.data));
         }catch (err) {
           console.error("Error fetching artworks");
           dispatch(fetchArtworksFailure("Failed to fetch artworks"));
         }
       };
-      fetchArtworks();
-    },[dispatch]);
-
     const openDetailView = (art) => {
       setSelectedArtwork(art);
     }
@@ -58,6 +65,23 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure,likeArtwor
     <div className="gallery-container container mt-5">
     <h2 className="text-center mb-4">Art Gallery</h2>
 
+    <div className="search-filter-container mb-4">
+                <input
+                    type="text"
+                    placeholder="Search by title..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="form-control mb-2"
+                />
+                <input
+                    type="text"
+                    placeholder="Filter by artist..."
+                    value={filterArtist}
+                    onChange={(e) => setFilterArtist(e.target.value)}
+                    className="form-control mb-2"
+                />
+    </div>
+
     {loading && <p className="text-center">Loading artworks...</p>}
     {error && <p className="text-center text-danger">{error}</p>}
     {!loading && artworks.length === 0 && <p className="text-center">No artworks available.</p>}
@@ -72,6 +96,7 @@ import { fetchArtworksStart,fetchArtworksSuccess,fetchArtworksFailure,likeArtwor
                     <div className="card-body">
                         <h3 className="card-title">{art.title}</h3>
                         <p className="card-artist">By {art.artist}</p>
+                        <p className="card-submitted-by">Submitted by: {art.user?.name || "Unknown"}</p>
                         <button
                             className="btn btn-like"
                             onClick={(e) => {

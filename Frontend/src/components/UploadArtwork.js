@@ -1,63 +1,133 @@
 import { useState } from "react";
 import API from "../axios";
-import "../styles/upload.css"
+import "../styles/upload.css";
 
 const UploadArtwork = () => {
-    const [title, setTitle] = useState("");
-    const [artist, setArtist] = useState("");
-    const [image, setImage] = useState(null);
+    const [artworks, setArtworks] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [description, setDescription] = useState("");
-    
+
+    const handleFilesChange = (e) => {
+        const files = Array.from(e.target.files);
+        const newArtworks = files.map((file) => ({
+            title: "",
+            artist: "",
+            description: "",
+            image: file,
+        }));
+        setArtworks([...artworks, ...newArtworks]);
+    };
+
+    const handleInputChange = (index, field, value) => {
+        const updatedArtworks = [...artworks];
+        updatedArtworks[index][field] = value;
+        setArtworks(updatedArtworks);
+    };
+
+    const handleRemove = (index) => {
+        const updatedArtworks = artworks.filter((_, i) => i !== index);
+        setArtworks(updatedArtworks);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if(!title || !artist || !image){
-            alert("All files are required");
+        if (artworks.length === 0) {
+            alert("Please upload at least one artwork.");
             return;
         }
-
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("artist", artist);
-        formData.append("image", image);
-        formData.append("description", description);
 
         setLoading(true);
 
         try {
-            const res = await API.post("/artworks/upload", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            });
+            for (let art of artworks) {
+                if (!art.title || !art.artist || !art.image) {
+                    alert("All fields are required for each artwork");
+                    setLoading(false);
+                    return;
+                }
 
-            alert("Artwork sent for Approval");
-            console.log(res.data);
+                const formData = new FormData();
+                formData.append("title", art.title);
+                formData.append("artist", art.artist);
+                formData.append("description", art.description);
+                formData.append("image", art.image);
 
-            setTitle("");
-            setArtist("");
-            setImage(null);
-            setDescription("");
+                await API.post("/artworks/upload", formData, {
+                    headers: { "Content-Type": "multipart/form-data" },
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                });
+            }
+
+            alert("Artworks sent for approval");
+            setArtworks([]);
         } catch (error) {
             console.error(error);
-            alert("Failed to upload artwork");
+            alert("Failed to upload artworks");
         } finally {
             setLoading(false);
         }
     };
-    return(
+
+    return (
         <div className="upload-container container mt-5">
-            <div className="card p-4 mx-auto" style={{ maxWidth: "600px" }}>
-            <h2 className="text-center mb-4">Submit Artwork</h2>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} className="form-control mb-3" required></input>
-                <input type="text" placeholder="Artist" value={artist} onChange={(e) => setArtist(e.target.value)} className="form-control mb-3" required></input>
-                <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} className="form-control mb-3" required></input>
-                <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} className="form-control mb-3" rows="4"></textarea>
-                <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-                    {loading? "Submitting..." : "Submit"}
-                </button>
-            </form>
+            <div className="card p-4 mx-auto" style={{ maxWidth: "800px" }}>
+                <h2 className="text-center mb-4">Submit Multiple Artworks</h2>
+                <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    className="form-control mb-3"
+                    onChange={handleFilesChange}
+                />
+
+                {artworks.map((art, index) => (
+                    <div key={index} className="artwork-item mb-4 p-3 border rounded">
+                        <img
+                            src={URL.createObjectURL(art.image)}
+                            alt="Preview"
+                            style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                            className="mb-2"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Title"
+                            value={art.title}
+                            onChange={(e) => handleInputChange(index, "title", e.target.value)}
+                            className="form-control mb-2"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Artist"
+                            value={art.artist}
+                            onChange={(e) => handleInputChange(index, "artist", e.target.value)}
+                            className="form-control mb-2"
+                        />
+                        <textarea
+                            placeholder="Description"
+                            value={art.description}
+                            onChange={(e) => handleInputChange(index, "description", e.target.value)}
+                            className="form-control mb-2"
+                        ></textarea>
+                        <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleRemove(index)}
+                        >
+                            Remove
+                        </button>
+                    </div>
+                ))}
+
+                {artworks.length > 0 && (
+                    <button
+                        type="submit"
+                        className="btn btn-primary w-100"
+                        onClick={handleSubmit}
+                        disabled={loading}
+                    >
+                        {loading ? "Submitting..." : "Submit All"}
+                    </button>
+                )}
             </div>
         </div>
     );

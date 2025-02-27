@@ -62,6 +62,7 @@ const AdminDashboard = () => {
                                 <div className="card-body">
                                     <h4 className="card-title text-dark">{art.title}</h4>
                                     <p className="card-text text-muted">By {art.artist}</p>
+                                    <p>Submitted by: {art.user?.name || "Unknown"}</p>
                                     <button className="btn btn-success me-2" onClick={() => handleApprove(art._id)}>Approve</button>
                                     <button className="btn btn-danger" onClick={() => handleReject(art._id)}>Reject</button>
                                 </div>
