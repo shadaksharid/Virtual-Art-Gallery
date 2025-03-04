@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import Notifications from "./components/Notifications";
+import HomeBanner from "./components/HomeBanner";
+import { FaUpload, FaUser, FaBell } from "react-icons/fa";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -36,7 +38,7 @@ function App() {
     const handleLogout = () => {
         localStorage.removeItem("token");
         setIsAuthenticated(false);
-        navigate("/login");
+        navigate("/");
     };
 
     const handleAdminLogout = () => {
@@ -47,52 +49,48 @@ function App() {
 
     return (
         <div className="container mt-3">
-        <h1 className="display-4">Welcome to the Virtual Art Gallery</h1>
+            <h1 className="display-4">Welcome to the Virtual Art Gallery</h1>
 
-
-        <div className="navbar-container">
-
-        {!isAuthenticated && !isAdmin ? (
-            <> 
-                <Link to="/" className="btn btn-outline-primary">Home</Link>
-                <Link to="/login" className="btn btn-outline-primary">Login</Link>
-                <Link to="/register" className="btn btn-outline-primary">Register</Link>
-                <Link to="/admin-login" className="btn btn-outline-dark">Admin Login</Link>
-            </>
-        ) : isAuthenticated ? (
-            <>
-                <Link to="/" className="btn btn-outline-primary">Home</Link>
-                <Link to="/gallery" className="btn btn-outline-primary">Gallery</Link>
-                <Link to="/upload" className="btn btn-outline-primary">Upload</Link>
-                <Link to="/profile" className="btn btn-outline-primary">Profile</Link>
-                <Link to="/notifications" className="btn btn-outline-primary">Notifications</Link>
-                <button onClick={handleLogout} className="btn btn-outline-danger">Logout</button>
-            </>
-        ) : isAdmin ? (
-            <>
-                <Link to="/" className="btn btn-outline-primary">Home</Link>
-                <Link to="/dashboard" className="btn btn-outline-primary">Admin Panel</Link>
-                <button onClick={handleAdminLogout} className="btn btn-outline-danger">Logout</button>
-            </>
-        ) : null}
-        </div>
+            <div className="navbar-container">
+                {!isAuthenticated && !isAdmin ? (
+                    <>
+                        <Link to="/" className="nav-link">Home</Link>
+                        <Link to="/login" className="nav-link">Login</Link>
+                        <Link to="/register" className="nav-link">Register</Link>
+                        <Link to="/admin-login" className="nav-link">Admin</Link>
+                    </>
+                ) : isAuthenticated ? (
+                    <>
+                        <Link to="/gallery" className="nav-link">Gallery</Link>
+                        <Link to="/upload" className="nav-link"><FaUpload className="nav-icon" /></Link>
+                        <Link to="/profile" className="nav-link"><FaUser className="nav-icon" /></Link>
+                        <Link to="/notifications" className="nav-link"><FaBell className="nav-icon" /></Link>
+                        <button onClick={handleLogout} className="nav-link logout">Logout</button>
+                    </>
+                ) : isAdmin ? (
+                    <>
+                        <Link to="/dashboard" className="nav-link">Admin Panel</Link>
+                        <button onClick={handleAdminLogout} className="nav-link logout">Logout</button>
+                    </>
+                ) : null}
+            </div>
 
             <Routes>
+                <Route path="/" element={<HomeBanner />} />
                 <Route path="/login" element={<Login onLogin={handleLogin} />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/upload" element={<UploadArtwork />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/notifications" element={<Notifications/>}/>
-
+                <Route path="/notifications" element={<Notifications />} />
                 <Route path="/admin-login" element={<AdminLogin onLogin={handleAdminLogin} />} />
                 <Route path="/dashboard" element={<AdminDashboard />} />
             </Routes>
 
             <center>
-            <div className="footer">
-                <p>&copy; 2025 Virtual Art Gallery</p>
-            </div>
+                <div className="footer">
+                    <p>&copy; 2025 Virtual Art Gallery</p>
+                </div>
             </center>
         </div>
     );
