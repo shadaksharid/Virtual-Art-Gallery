@@ -12,6 +12,8 @@ const Gallery = () => {
     const [commentText, setCommentText] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [filterArtist, setFilterArtist] = useState("");
+    const [replyText, setReplyText] = useState("");
+    const [replyingTo, setReplyingTo] = useState(null)
     const modalOverlayRef = useRef(null); 
 
     useEffect(() => {
@@ -64,11 +66,25 @@ const Gallery = () => {
         try {
             const response = await API.post(`/artworks/${artworkId}/comment`, { text: commentText });
             dispatch(commentArtworkSuccess(response.data.artwork));
+            setSelectedArtwork(response.data.artwork)
             setCommentText("");
         } catch (err) {
             console.error("Error adding comment", err);
         }
     };
+
+    const handleReply = async(artworkId, commentId) => {
+        if(!replyText.trim()) return;
+        try{
+            const response = await API.post(`/artworks/${artworkId}/comment/${commentId}/reply`, {text: replyText});
+            dispatch(commentArtworkSuccess(response.data.artwork));
+            setSelectedArtwork(response.data.artwork);
+            setReplyText("");
+            setReplyingTo(null);
+        }catch(err){
+            console.error("Error adding reply", err);
+        }
+    }
 
     return (
         <div className="gallery-container container mt-5">
@@ -139,25 +155,60 @@ const Gallery = () => {
                         <div className="comments-section">
                             <h4>Comments</h4>
                             <ul className="comments-list">
-                                {selectedArtwork.comments.map((comment, index) => (
-                                    <li key={index} className="comment-item">
-                                        <strong>{comment.user.name}:</strong> {comment.text}
-                                    </li>
+                                {selectedArtwork.comments.map((comment) => (
+                                <li key={comment._id} className="comment-item">
+                                    <strong>{comment.user.name}:</strong> {comment.text}
+                                    <button
+                                        className="btn btn-reply"
+                                        onClick={() => setReplyingTo(comment._id)}
+                                    >
+                                        Reply
+                                    </button>
+
+                                    {replyingTo === comment._id && (
+                                    <div className="reply-input-container">
+                                        <input
+                                            type="text"
+                                            className="reply-input"
+                                            placeholder="Write a reply..."
+                                            value={replyText}
+                                            onChange={(e) => setReplyText(e.target.value)}
+                                        />
+                                        <button
+                                            className="btn btn-comment"
+                                            onClick={() => handleReply(selectedArtwork._id, comment._id)}
+                                        >
+                                            Post Reply
+                                        </button>
+                                    </div>
+                                    )}
+
+                                    {comment.replies && comment.replies.length > 0 && (
+                                    <ul className="replies-list">
+                                        {comment.replies.map((reply) => (
+                                        <li key = {reply._id}className="reply-item">
+                                            ↳ <strong>{reply.user?.name}:</strong> {reply.text}
+                                        </li>
+                                        ))}
+                                    </ul>
+                                    )}
+                                </li>
                                 ))}
                             </ul>
+
                             <div className="comment-input-container">
                                 <input
-                                    type="text"
-                                    className="comment-input"
-                                    placeholder="Add a comment..."
-                                    value={commentText}
-                                    onChange={(e) => setCommentText(e.target.value)}
+                                type="text"
+                                className="comment-input"
+                                placeholder="Add a comment..."
+                                value={commentText}
+                                onChange={(e) => setCommentText(e.target.value)}
                                 />
                                 <button
                                     className="btn btn-comment"
                                     onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleComment(selectedArtwork._id);
+                                    e.stopPropagation();
+                                    handleComment(selectedArtwork._id);
                                     }}
                                 >
                                     Post Comment

@@ -7,7 +7,12 @@ function HomeBanner() {
     const navigate = useNavigate();
 
     const handleExploreGallery = () => {
-        navigate("/login"); 
+        const userToken = localStorage.getItem("token");
+        if(userToken){
+            navigate("/gallery");
+        }else{
+            navigate("/login");
+        } 
     };
 
     return (

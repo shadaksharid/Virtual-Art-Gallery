@@ -29,7 +29,8 @@ const ArtworkSchema = new mongoose.Schema({
     comments: [{
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            ref: "User",
+            required: true
         },
         text: {
             type: String,
@@ -38,7 +39,22 @@ const ArtworkSchema = new mongoose.Schema({
         createdAt: {
             type: Date,
             default: Date.now
-        }
+        },
+        replies: [{
+            text:{
+                type: String,
+                required: true
+            },
+            user:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true
+            },
+            createdAt:{
+                type: Date,
+                default: Date.now
+            }
+        }]
     }],
     user: {
       type: mongoose.Schema.Types.ObjectId,

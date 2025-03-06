@@ -30,7 +30,7 @@ const AuthForm = ({ isLogin, onLogin }) => {
                 navigate("/login")
             }
         }catch(err){
-            setError(err.response?.data?.message || "Something went wrong")
+            setError(err.response?.data?.message || "User already exists or Invalid Credentials")
         }
     };
 

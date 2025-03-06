@@ -60,9 +60,10 @@ function App() {
                         <Link to="/admin-login" className="nav-link">Admin</Link>
                     </>
                 ) : isAuthenticated ? (
-                    <>
+                    <>  
+                        <Link to="/" className="nav-link">Home</Link>
                         <Link to="/gallery" className="nav-link">Gallery</Link>
-                        <Link to="/upload" className="nav-link"><FaUpload className="nav-icon" /></Link>
+                        <Link to="/upload" className="nav-link">Upload</Link>
                         <Link to="/profile" className="nav-link"><FaUser className="nav-icon" /></Link>
                         <Link to="/notifications" className="nav-link"><FaBell className="nav-icon" /></Link>
                         <button onClick={handleLogout} className="nav-link logout">Logout</button>
