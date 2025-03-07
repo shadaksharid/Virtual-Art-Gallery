@@ -1,6 +1,5 @@
 import React from "react";
 import "../styles/banner.css";
-import GalleryImage from "../components/homebanner.jpg";
 import { useNavigate } from "react-router-dom";
 
 function HomeBanner() {
@@ -26,7 +25,7 @@ function HomeBanner() {
             </div>
 
             <div className="banner-image">
-                <img src={GalleryImage} alt="Virtual Art Gallery" />
+                <img src="https://res.cloudinary.com/dnifht7ji/image/upload/v1741324618/homebanner_uzbktj.jpg" alt="Virtual Art Gallery" />
             </div>
         </div>
     );

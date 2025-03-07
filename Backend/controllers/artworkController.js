@@ -114,7 +114,8 @@ const commentOnArtwork = async (req, res) => {
         const comment = { user: userId, text };
         artwork.comments.push(comment);
         await artwork.save();
-        res.json({ message: "Comment added", artwork });
+        const updatedArtwork = await Artwork.findById(artworkId).populate("user", "name").populate("comments.user","name");
+        res.json({ message: "Comment added", artwork: updatedArtwork });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

@@ -13,7 +13,8 @@ const Gallery = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [filterArtist, setFilterArtist] = useState("");
     const [replyText, setReplyText] = useState("");
-    const [replyingTo, setReplyingTo] = useState(null)
+    const [replyingTo, setReplyingTo] = useState(null);
+    const [showSearch, setShowSearch] = useState(false);
     const modalOverlayRef = useRef(null); 
 
     useEffect(() => {
@@ -56,6 +57,7 @@ const Gallery = () => {
         try {
             const response = await API.post(`/artworks/${artworkId}/like`);
             dispatch(likeArtworkSuccess(response.data.artwork));
+            setSelectedArtwork(response.data.artwork)
         } catch (err) {
             console.error("Error liking artwork", err);
         }
@@ -66,7 +68,7 @@ const Gallery = () => {
         try {
             const response = await API.post(`/artworks/${artworkId}/comment`, { text: commentText });
             dispatch(commentArtworkSuccess(response.data.artwork));
-            setSelectedArtwork(response.data.artwork)
+            setSelectedArtwork(response.data.artwork);
             setCommentText("");
         } catch (err) {
             console.error("Error adding comment", err);
@@ -88,9 +90,19 @@ const Gallery = () => {
 
     return (
         <div className="gallery-container container mt-5">
-            <h2 className="text-center mb-4">Art Gallery</h2>
+            <div className="gallery-header">
+                <h2>Art Gallery</h2>
+                <button 
+                    className="search-icon" 
+                    onClick={() => setShowSearch(!showSearch)}
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                </svg>
+                </button>
+            </div>
 
-            <div className="search-filter-container mb-4">
+            <div className={`search-filter-container mb-4 ${!showSearch ? 'hidden' : ''}`}>
                 <input
                     type="text"
                     placeholder="Search by title..."
