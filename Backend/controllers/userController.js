@@ -140,4 +140,15 @@ const getUserComments = async (req,res) => {
     res.status(500).json({ error: error.message });
 }
 }
-module.exports = { register, login, updateProfile, getUserProfile, getUserLikedArtworks, getUserComments };
+const getUserUploadedArtworks = async (req, res) => {
+  try {
+      const user = await User.findById(req.user.id).populate("uploadedArtworks");
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user.uploadedArtworks);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+};
+module.exports = { register, login, updateProfile, getUserProfile, getUserLikedArtworks, getUserComments, getUserUploadedArtworks };

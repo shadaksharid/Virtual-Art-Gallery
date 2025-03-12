@@ -60,12 +60,26 @@ export const fetchUserComments = createAsyncThunk(
         }
     }
 );
-
+export const fetchUserUploadedArtworks = createAsyncThunk(
+    "user/fetchUserUploadedArtworks",
+    async (_, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await API.get("/users/profile/uploaded-artworks", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return res.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 const userSlice = createSlice({
     name:"user",
     initialState:{
         user: null,
         likedArtworks: [],
+        uploadedArtworks: [],
         comments: [],
         status:"idle",
         error:null
@@ -94,6 +108,9 @@ const userSlice = createSlice({
         })
         .addCase(fetchUserLikedArtworks.fulfilled, (state, action) => {
             state.likedArtworks = action.payload;
+        })
+        .addCase(fetchUserUploadedArtworks.fulfilled, (state, action) => {
+            state.uploadedArtworks = action.payload;
         })
         .addCase(fetchUserComments.fulfilled, (state, action) => {
             state.comments = action.payload;

@@ -1,11 +1,11 @@
 import React,{useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserProfile, updateUserProfile,fetchUserLikedArtworks, fetchUserComments } from "../redux/userSlice";
+import { fetchUserProfile, updateUserProfile,fetchUserLikedArtworks, fetchUserComments, fetchUserUploadedArtworks } from "../redux/userSlice";
 import "../styles/profile.css";
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const {user, likedArtworks, comments,status, error} = useSelector((state) => state.user);
+    const {user, likedArtworks,uploadedArtworks, comments,status, error} = useSelector((state) => state.user);
 
     const [bio, setBio] = useState("");
     const [gender, setGender] = useState("");
@@ -14,6 +14,7 @@ const Profile = () => {
         dispatch(fetchUserProfile());
         dispatch(fetchUserLikedArtworks());
         dispatch(fetchUserComments());
+        dispatch(fetchUserUploadedArtworks());
     }, [dispatch]);
 
     useEffect(() => {
@@ -75,6 +76,24 @@ const Profile = () => {
                         ))
                     ) : (
                         <p>No liked artworks.</p>
+                    )}
+                </div>
+                <h3 className="mt-4">Uploaded Artworks</h3>
+                <div className="row">
+                    {uploadedArtworks.length > 0 ? (
+                        uploadedArtworks.map((art) => (
+                            <div key={art._id} className="col-6 col-sm-6 col-md-4 col-lg-3">
+                                <div className="card h-100">
+                                    <img src={art.imageUrl} alt={art.title} className="card-img-top img-fluid" />
+                                    <div className="card-body">
+                                        <h5 className="card-title">{art.title}</h5>
+                                        <p className="card-text">By {art.artist}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No uploaded artworks.</p>
                     )}
                 </div>
                 <h3 className="mt-4">My Comments</h3>

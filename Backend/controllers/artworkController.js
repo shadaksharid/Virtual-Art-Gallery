@@ -17,6 +17,10 @@ const addArtwork = async (req, res) => {
         });
         await newArtwork.save();
 
+        const user = await User.findById(userId);
+        user.uploadedArtworks.push(newArtwork._id);
+        await user.save();
+
         res.status(201).json({ message: "Artwork added successfully, pending approval", artwork: newArtwork });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -83,14 +87,35 @@ const likeArtwork = async (req, res) => {
             user.likedArtworks = user.likedArtworks.filter(id => id.toString() !== artworkId);
             await artwork.save();
             await user.save();
-            return res.json({ message: "Artwork unliked", artwork });
+
+            const updatedArtwork = await Artwork.findById(artworkId)
+            .populate("user", "name")
+            .populate("likes", "name")
+            .populate({
+                path:"comments",
+                populate: {
+                    path: "user replies.user",
+                    select: "name"
+                }
+            })
+            return res.json({ message: "Artwork unliked", artwork: updatedArtwork });
         }
 
         artwork.likes.push(userId);
         user.likedArtworks.push(artworkId);
         await artwork.save();
         await user.save();
-        res.json({ message: "Art Liked", artwork });
+        const updatedArtwork = await Artwork.findById(artworkId)
+            .populate("user", "name")
+            .populate("likes", "name")
+            .populate({
+                path:"comments",
+                populate: {
+                    path: "user replies.user",
+                    select: "name"
+                }
+            })
+        res.json({ message: "Art Liked", artwork: updatedArtwork });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -150,7 +175,9 @@ const addReply = async(req, res) => {
         const updatedArtwork = await Artwork.findById(artworkId)
         .populate("user","name")
         .populate("comments.user", "name")
-        .populate("comments.replies.user", "name");
+        .populate("comments.replies.user", "name")
+        .populate("likes.user", "name")
+        .populate("likes.replies.user","name");
         res.json({message: "Reply added successfully", artwork: updatedArtwork});
     }catch(error){
         return res.status(500).json({error: error.message})

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchNotifications, markNotificationAsRead } from "../redux/notificationSlice";
 import "../styles/notification.css";
 
-const Notifications = () => {
+const Notifications = ({onMarkAsRead}) => {
     const dispatch = useDispatch();
     const { list, loading, error } = useSelector((state) => state.notifications);
 
@@ -13,6 +13,9 @@ const Notifications = () => {
 
     const handleMarkAsRead = (id) => {
         dispatch(markNotificationAsRead(id));
+        if(onMarkAsRead){
+            onMarkAsRead();
+        }
     };
 
     const formatDate = (dateString) => {

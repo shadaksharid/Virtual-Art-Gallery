@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../axios";
 import "../styles/upload.css";
+import { toast } from "react-toastify";
 
 const UploadArtwork = () => {
     const [artworks, setArtworks] = useState([]);
@@ -32,7 +33,7 @@ const UploadArtwork = () => {
         e.preventDefault();
 
         if (artworks.length === 0) {
-            alert("Please upload at least one artwork.");
+            toast.warning("Please upload at least one artwork.");
             return;
         }
 
@@ -41,7 +42,7 @@ const UploadArtwork = () => {
         try {
             for (let art of artworks) {
                 if (!art.title || !art.artist || !art.image) {
-                    alert("All fields are required for each artwork");
+                    toast.warning("All fields are required for each artwork");
                     setLoading(false);
                     return;
                 }
@@ -58,11 +59,11 @@ const UploadArtwork = () => {
                 });
             }
 
-            alert("Artworks sent for approval");
+            toast.success("Artworks sent for approval");
             setArtworks([]);
         } catch (error) {
             console.error(error);
-            alert("Failed to upload artworks");
+            toast.error("Failed to upload artworks");
         } finally {
             setLoading(false);
         }

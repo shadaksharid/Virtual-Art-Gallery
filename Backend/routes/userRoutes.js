@@ -1,6 +1,6 @@
 
 const express = require("express");
-const { register, login, updateProfile, getUserProfile, getUserLikedArtworks,getUserComments } = require("../controllers/userController");
+const { register, login, updateProfile, getUserProfile, getUserLikedArtworks,getUserComments, getUserUploadedArtworks } = require("../controllers/userController");
 const { body } = require("express-validator");
 const auth = require("../middeware/authMiddleware");
 const router = express.Router();
@@ -35,8 +35,8 @@ router.put(
   ],
   updateProfile
 );
-
-router.get("/profile", auth, getUserProfile);
+router.get("/profile", getUserProfile);
 router.get("/profile/liked-artworks", auth, getUserLikedArtworks); 
 router.get("/profile/comments", auth, getUserComments); 
+router.get("/profile/uploaded-artworks", auth, getUserUploadedArtworks);
 module.exports = router;

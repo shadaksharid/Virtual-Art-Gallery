@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
   likedArtworks: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Artwork"
+  }],
+  uploadedArtworks: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Artwork"
   }]
 });
 

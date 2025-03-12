@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../axios";
 import "../styles/auth.css";
-
+import { toast } from "react-toastify";
 const AuthForm = ({ isLogin, onLogin }) => {
     const [formData, setFormData] = useState({name:"", email:"", password:""});
     const [error, setError] = useState("");
@@ -19,18 +19,19 @@ const AuthForm = ({ isLogin, onLogin }) => {
             if(isLogin){
                 const res = await API.post("users/login",{email : formData.email, password: formData.password});
                 localStorage.setItem("token", res.data.token);
-                alert("Login successful");
+                toast.success("Login successful");
                 if (onLogin){ 
                     onLogin();
                 }
                 setTimeout (() => {navigate("/gallery");}, 100)
             }else{
                 await API.post("users/register", formData);
-                alert("Registration successfull");
+                toast.success("Registration successfull");
                 navigate("/login")
             }
         }catch(err){
             setError(err.response?.data?.message || "User already exists or Invalid Credentials")
+            toast.error("User exists or Invalid credentials");
         }
     };
 
