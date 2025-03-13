@@ -1,6 +1,6 @@
 const Artwork = require("../models/Artwork");
 const User = require("../models/User");
-
+const {sendNotification} = require("../notificationService");
 const addArtwork = async (req, res) => {
     try {
         const { title, artist, description } = req.body;
@@ -105,6 +105,8 @@ const likeArtwork = async (req, res) => {
         user.likedArtworks.push(artworkId);
         await artwork.save();
         await user.save();
+        const message = `${user.name} liked your artwork "${artwork.title}".`;
+        await sendNotification(artwork.user._id, message);
         const updatedArtwork = await Artwork.findById(artworkId)
             .populate("user", "name")
             .populate("likes", "name")
@@ -139,6 +141,9 @@ const commentOnArtwork = async (req, res) => {
         const comment = { user: userId, text };
         artwork.comments.push(comment);
         await artwork.save();
+        const user = await User.findById(userId);
+        const message = `${user.name} commented on your artwork "${artwork.title}" : "${text}".`
+        await sendNotification(artwork.user._id, message);
         const updatedArtwork = await Artwork.findById(artworkId).populate("user", "name").populate("comments.user","name");
         res.json({ message: "Comment added", artwork: updatedArtwork });
     } catch (error) {
@@ -171,7 +176,10 @@ const addReply = async(req, res) => {
 
         comment.replies.push(reply);
         await artwork.save();
-
+        const user = await User.findById(userId);
+        const commentAuthor = await User.findById(comment.user);
+        const message = `${user.name} replied to your comment on "${artwork.title}" : "${text}".`;
+        await sendNotification(commentAuthor._id, message);
         const updatedArtwork = await Artwork.findById(artworkId)
         .populate("user","name")
         .populate("comments.user", "name")

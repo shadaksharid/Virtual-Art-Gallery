@@ -142,11 +142,15 @@ const getUserComments = async (req,res) => {
 }
 const getUserUploadedArtworks = async (req, res) => {
   try {
-      const user = await User.findById(req.user.id).populate("uploadedArtworks");
+      const user = await User.findById(req.user.id).populate({
+        path: "uploadedArtworks",
+        match: {status: "approved"}
+      });
       if (!user) {
           return res.status(404).json({ message: "User not found" });
       }
-      res.json(user.uploadedArtworks);
+      const approvedArtworks = user.uploadedArtworks.filter(artwork => artwork !== null);
+      res.json(approvedArtworks);
   } catch (error) {
       res.status(500).json({ error: error.message });
   }

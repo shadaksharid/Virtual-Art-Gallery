@@ -35,7 +35,7 @@ router.put(
   ],
   updateProfile
 );
-router.get("/profile", getUserProfile);
+router.get("/profile", auth,getUserProfile);
 router.get("/profile/liked-artworks", auth, getUserLikedArtworks); 
 router.get("/profile/comments", auth, getUserComments); 
 router.get("/profile/uploaded-artworks", auth, getUserUploadedArtworks);
