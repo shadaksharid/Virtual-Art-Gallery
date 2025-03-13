@@ -5,7 +5,7 @@ import Profile from "./pages/UserProfile";
 import "../src/styles/app_style.css";
 import Gallery from "./pages/Gallery";
 import UploadArtwork from "./components/UploadArtwork";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import Notifications from "./components/Notifications";
@@ -14,6 +14,7 @@ import { FaUser, FaBell, FaTimes, FaBars } from "react-icons/fa";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import API from "./axios";
+import { jwtDecode } from "jwt-decode";
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -21,15 +22,47 @@ function App() {
     const [navOpen, setNavOpen] = useState(false);
     const [hasUnreadNotif, setHasUnreadNotif] = useState(false);
     const navigate = useNavigate();
+    const [navVisible, setNavVisible] = useState(true);
+    const lastScrollY = useRef(0);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY
+            if(currentScrollY < 10) {
+                setNavVisible(true);
+            }
+            else if(currentScrollY < lastScrollY.current){
+                setNavVisible(true);
+            }else if(currentScrollY > lastScrollY.current){
+                setNavVisible(false);
+                if(navOpen){
+                    setNavOpen(true)
+                }
+            }
+            lastScrollY.current = currentScrollY;
+        };
+        window.addEventListener("scroll", handleScroll, {passive: true});
+        return window.removeEventListener("scroll", handleScroll);
+    },[navOpen]);
     useEffect(() => {
         const userToken = localStorage.getItem("token");
         const adminToken = localStorage.getItem("adminToken");
 
         if (userToken) {
+            const decodedToken = jwtDecode(userToken);
+            const expiryTime = decodedToken.exp * 1000;
+            const currentTime = Date.now();
+
+            if(currentTime >= expiryTime){
+                handleLogout();
+            }else{
             setIsAuthenticated(true);
             fetchUserProfile(userToken);
             fetchNotifications(userToken);
+
+            const timeout = setTimeout(handleLogout, expiryTime - currentTime);
+            return() => clearTimeout(timeout);
+            }
         }
         if (adminToken) {
             setIsAdmin(true);
@@ -106,7 +139,7 @@ function App() {
                 `Welcome back , ${username}` : 
                 "Welcome to Virtual Art Gallery"
             }</h1>
-
+            <div className={`nav-wrapper ${navVisible ? 'visible' : 'hidden'}`}>
             <div className="hamburger-menu" onClick={toggleNav}>
                 {navOpen ? <FaTimes /> : <FaBars />}
             </div>
@@ -153,6 +186,7 @@ function App() {
                         <button onClick={() => {handleAdminLogout(); closeNav();}} className="nav-link logout">Logout</button>
                     </>
                 ) : null}
+                </div>
             </div>
 
             <Routes>
