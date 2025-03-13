@@ -243,7 +243,6 @@
         text-align: center;
     }
 }
-/* Existing styles remain unchanged */
 
 .header-container {
     display: flex;
@@ -259,7 +258,6 @@
     z-index: 100;
   }
   
-  /* Responsive styles */
   @media screen and (max-width: 768px) {
     .hamburger-menu {
       display: block;
@@ -290,7 +288,6 @@
     }
   }
   
-  /* For desktop view */
   @media screen and (min-width: 769px) {
     .navbar-container {
       display: flex;
