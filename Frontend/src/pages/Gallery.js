@@ -123,17 +123,13 @@ const Gallery = () => {
             {error && <p className="text-center text-danger">{error}</p>}
             {!loading && artworks.length === 0 && <p className="text-center">No artworks available.</p>}
 
-            <div className="row">
+            <div className="gallery">
                 {artworks.map((art) => (
-                    <div key={art._id} className="col-md-4 mb-4" onClick={() => openDetailView(art)}>
-                        <div className="card h-100">
-                            <div className="card-image-container">
-                                <img src={art.imageUrl} alt={art.title} className="card-img" />
-                            </div>
-                            <div className="card-body">
-                                <h3 className="card-title">{art.title}</h3>
-                                <p className="card-artist">By {art.artist}</p>
-                                <p className="card-submitted-by">Submitted by: {art.user?.name || "Unknown"}</p>
+                    <div key={art._id} className="gallery-item" onClick={() => openDetailView(art)}>
+                                <img src={art.imageUrl} alt={art.title}/>
+                                <h3 className="gallery-title">{art.title}</h3>
+                                <p className="gallery-artist">By {art.artist}</p>
+                                <p className="gallery-submitted-by">Submitted by: {art.user?.name || "Unknown"}</p>
                                 <button
                                     className="btn btn-like"
                                     onClick={(e) => {
@@ -143,9 +139,7 @@ const Gallery = () => {
                                 >
                                     ❤️ {art.likes.length}
                                 </button>
-                            </div>
                         </div>
-                    </div>
                 ))}
             </div>
 
