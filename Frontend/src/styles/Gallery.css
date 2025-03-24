@@ -1,5 +1,5 @@
 .gallery-container {
-  max-width: 100000px;
+  max-width: max-content;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -121,13 +121,13 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background: #fff;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: 0;
   }
   
   .gallery-item img {
     width: 100%;
     display: block;
-    border-radius: 8px;
+    border-radius: 0;
     transition: transform 0.3s ease-in-out;
   }
   

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../axios";
 import "../styles/admin.css"
+import { toast } from "react-toastify";
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -29,6 +30,7 @@ const AdminDashboard = () => {
         try {
             await API.put(`/admins/artworks/${artworkId}/approve`);
             setPendingArtworks(pendingArtworks.filter((art) => art._id !== artworkId));
+            toast.success("Artwork as been approved");
         } catch (err) {
             console.error("Error approving artwork", err);
         }
@@ -38,6 +40,7 @@ const AdminDashboard = () => {
         try {
             await API.put(`/admins/artworks/${artworkId}/reject`);
             setPendingArtworks(pendingArtworks.filter((art) => art._id !== artworkId));
+            toast.error("Artwork has been rejected");
         } catch (err) {
             console.error("Error rejecting artwork", err);
         }

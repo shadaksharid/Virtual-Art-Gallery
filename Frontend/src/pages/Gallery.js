@@ -159,7 +159,7 @@ const Gallery = () => {
                         </button>
 
                         <div className="comments-section">
-                            <h4>Comments</h4>
+                            <h4>Comments : {selectedArtwork.comments.length}</h4>
                             <ul className="comments-list">
                                 {selectedArtwork.comments.map((comment) => (
                                 <li key={comment._id} className="comment-item">
