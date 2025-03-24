@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Virtual-Art-Gallery/static/css/main.138fa20c.css",
+    "main.js": "/Virtual-Art-Gallery/static/js/main.32333656.js",
+    "index.html": "/Virtual-Art-Gallery/index.html",
+    "main.138fa20c.css.map": "/Virtual-Art-Gallery/static/css/main.138fa20c.css.map",
+    "main.32333656.js.map": "/Virtual-Art-Gallery/static/js/main.32333656.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.138fa20c.css",
+    "static/js/main.32333656.js"
+  ]
+}
