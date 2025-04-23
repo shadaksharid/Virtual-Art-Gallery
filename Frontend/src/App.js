@@ -15,12 +15,13 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import API from "./axios";
 import { jwtDecode } from "jwt-decode";
+import OtpVerification from "./pages/OtpVerification";
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [username, setUsername] = useState("");
     const [navOpen, setNavOpen] = useState(false);
-    const [hasUnreadNotif, setHasUnreadNotif] = useState(false);
+    const [unReadNotifCount, setUnreadNotifCount] = useState(0);
     const navigate = useNavigate();
     const [navVisible, setNavVisible] = useState(true);
     const lastScrollY = useRef(0);
@@ -94,10 +95,8 @@ function App() {
             });
             if(response.status == 200){
                 const notifications = response.data;
-                const unreadNotifications = notifications.some(
-                    (notification) => !notification.isRead
-                );
-                setHasUnreadNotif(unreadNotifications);
+                const unreadCount = notifications.filter(notif => !notif.isRead).length;
+                setUnreadNotifCount(unreadCount);
             }
         }catch(error){
             console.error("error fetching notifications", error);
@@ -129,14 +128,14 @@ function App() {
         setNavOpen(false);
     }
     const handleNotifications = () => {
-        setHasUnreadNotif(false);
+        setUnreadNotifCount(unReadNotifCount - 1);
     }
     return (
         <>
         <ToastContainer position="top-right" autoClose={3000}/>
         <div className="container mt-3">
             <h1 className="display-4">{isAuthenticated && username ? 
-                `Welcome back , ${username}` : 
+                `Welcome , ${username}` : 
                 "Welcome to Virtual Art Gallery"
             }</h1>
             <div className={`nav-wrapper ${navVisible ? 'visible' : 'hidden'}`}>
@@ -160,7 +159,7 @@ function App() {
                         <Link to="/notifications" className="nav-link" onClick={closeNav}>
                             <div style={{position: "relative"}}>
                                 <FaBell className="nav-icon" />
-                                {hasUnreadNotif && (
+                                {unReadNotifCount > 0 && (
                                     <span
                                     style={{
                                         position: "absolute",
@@ -173,7 +172,7 @@ function App() {
                                         fontSize: "12px",
                                     }}
                                 >
-                                    !
+                                    {unReadNotifCount}
                                 </span>
                                 )}
                             </div>
@@ -199,6 +198,7 @@ function App() {
                 <Route path="/notifications" element={<Notifications onMarkAsRead={handleNotifications}/>} />
                 <Route path="/admin-login" element={<AdminLogin onLogin={handleAdminLogin} />} />
                 <Route path="/dashboard" element={<AdminDashboard />} />
+                <Route path="/verify-otp" element = {<OtpVerification />} />
             </Routes>
 
             <center>

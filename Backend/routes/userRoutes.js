@@ -1,6 +1,6 @@
 
 const express = require("express");
-const { register, login, updateProfile, getUserProfile, getUserLikedArtworks,getUserComments, getUserUploadedArtworks } = require("../controllers/userController");
+const { register, login, updateProfile, getUserProfile, getUserLikedArtworks,getUserComments, getUserUploadedArtworks, verifyOtp, verifyLoginOtp } = require("../controllers/userController");
 const { body } = require("express-validator");
 const auth = require("../middeware/authMiddleware");
 const router = express.Router();
@@ -16,6 +16,14 @@ router.post(
   register
 );
 
+router.post(
+  "/verify-otp",
+  [
+    body("email", "valid email is required").isEmail(),
+    body("otp", "valid otp is required").isLength({min : 6, max : 6})
+  ],
+  verifyOtp
+)
 
 router.post(
   "/login",
@@ -25,7 +33,14 @@ router.post(
   ],
   login
 );
-
+router.post(
+  "/verify-login-otp",
+  [
+    body("email","enter valid password").isEmail(),
+    body("otp","enter valid otp or otp expired").isLength({min: 6, max: 6})
+  ],
+  verifyLoginOtp
+)
 router.put(
   "/profile",
   auth, 

@@ -30,7 +30,17 @@ const userSchema = new mongoose.Schema({
   uploadedArtworks: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Artwork"
-  }]
+  }],
+  isVerified : {
+    type: Boolean,
+    default: false,
+  },
+  otp : {
+    type: String,
+  },
+  otpExpires : {
+    type: Date,
+  }
 });
 
 module.exports = mongoose.model("User", userSchema);

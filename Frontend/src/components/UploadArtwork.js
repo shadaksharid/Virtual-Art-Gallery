@@ -2,10 +2,12 @@ import { useState } from "react";
 import API from "../axios";
 import "../styles/upload.css";
 import { toast } from "react-toastify";
+import { FaTimes } from "react-icons/fa";
 
 const UploadArtwork = () => {
     const [artworks, setArtworks] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [activeArtworkIndex, setActiveArtworkIndex] = useState(0);
 
     const handleFilesChange = (e) => {
         const files = Array.from(e.target.files);
@@ -16,6 +18,10 @@ const UploadArtwork = () => {
             image: file,
         }));
         setArtworks([...artworks, ...newArtworks]);
+
+        if (artworks.length === 0 && files.length > 0) {
+            setActiveArtworkIndex(0);
+        }
     };
 
     const handleInputChange = (index, field, value) => {
@@ -27,6 +33,12 @@ const UploadArtwork = () => {
     const handleRemove = (index) => {
         const updatedArtworks = artworks.filter((_, i) => i !== index);
         setArtworks(updatedArtworks);
+
+        if (index === activeArtworkIndex) {
+            setActiveArtworkIndex(Math.min(activeArtworkIndex, updatedArtworks.length - 1));
+        } else if (index < activeArtworkIndex) {
+            setActiveArtworkIndex(activeArtworkIndex - 1);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -61,6 +73,7 @@ const UploadArtwork = () => {
 
             toast.success("Artworks sent for approval");
             setArtworks([]);
+            setActiveArtworkIndex(0);
         } catch (error) {
             console.error(error);
             toast.error("Failed to upload artworks");
@@ -81,43 +94,68 @@ const UploadArtwork = () => {
                     onChange={handleFilesChange}
                 />
 
-                {artworks.map((art, index) => (
-                    <div key={index} className="artwork-item mb-4 p-3 border rounded">
-                        <img
-                            src={URL.createObjectURL(art.image)}
-                            alt="Preview"
-                            style={{ width: "100px", height: "100px", objectFit: "cover" }}
-                            className="mb-2"
-                        />
+ 
+                <div className="d-flex flex-wrap gap-3 mb-4">
+                    {artworks.map((art, index) => (
+                        <div 
+                            key={index} 
+                            className={`image-preview-wrapper position-relative ${index === activeArtworkIndex ? 'active' : ''}`}
+                            onClick={() => setActiveArtworkIndex(index)}
+                            style={{ cursor: "pointer" }}
+                        >
+                            <div className="position-absolute top-0 end-0">
+                                <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm p-1 rounded-circle"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleRemove(index);
+                                    }}
+                                    style={{ transform: "translate(30%, -30%)" }}
+                                >
+                                    <FaTimes />
+                                </button>
+                            </div>
+                            <img
+                                src={URL.createObjectURL(art.image)}
+                                alt="Preview"
+                                className="img-thumbnail"
+                                style={{
+                                    width: "100px",
+                                    height: "100px",
+                                    objectFit: "cover",
+                                    border: index === activeArtworkIndex ? "3px solidrgb(168, 202, 253)" : ""
+                                }}
+                            />
+                        </div>
+                    ))}
+                </div>
+
+                {artworks.length > 0 && (
+                    <div className="artwork-item mb-4 p-3 border rounded">
+                        <h6>Artwork {activeArtworkIndex + 1} of {artworks.length}</h6>
                         <input
                             type="text"
                             placeholder="Title"
-                            value={art.title}
-                            onChange={(e) => handleInputChange(index, "title", e.target.value)}
+                            value={artworks[activeArtworkIndex].title}
+                            onChange={(e) => handleInputChange(activeArtworkIndex, "title", e.target.value)}
                             className="form-control mb-2"
                         />
                         <input
                             type="text"
                             placeholder="Artist"
-                            value={art.artist}
-                            onChange={(e) => handleInputChange(index, "artist", e.target.value)}
+                            value={artworks[activeArtworkIndex].artist}
+                            onChange={(e) => handleInputChange(activeArtworkIndex, "artist", e.target.value)}
                             className="form-control mb-2"
                         />
                         <textarea
                             placeholder="Description"
-                            value={art.description}
-                            onChange={(e) => handleInputChange(index, "description", e.target.value)}
+                            value={artworks[activeArtworkIndex].description}
+                            onChange={(e) => handleInputChange(activeArtworkIndex, "description", e.target.value)}
                             className="form-control mb-2"
                         ></textarea>
-                        <button
-                            type="button"
-                            className="btn btn-danger btn-sm"
-                            onClick={() => handleRemove(index)}
-                        >
-                            Remove
-                        </button>
                     </div>
-                ))}
+                )}
 
                 {artworks.length > 0 && (
                     <button

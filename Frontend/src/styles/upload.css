@@ -62,3 +62,18 @@ textarea {
     padding: 15px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
+.image-preview-wrapper {
+    transition: all 0.2s ease;
+}
+
+.image-preview-wrapper:hover {
+    transform: scale(1.05);
+}
+
+.image-preview-wrapper.active img {
+    border-color: #0d6efd !important;
+}
+
+.artwork-item {
+    background-color: #f8f9fa;
+}

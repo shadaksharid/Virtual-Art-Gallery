@@ -108,7 +108,7 @@ const Profile = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No comments yet.</p>
+                    <p className="no-comments">No comments yet.</p>
                 )}
             </div>
       </div>

@@ -3,62 +3,117 @@
   justify-content: center;
   align-items: center;
   min-height: 80vh;
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.1));
+  padding: 20px;
 }
 
 .card {
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 30px;
   width: 100%;
   max-width: 400px;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .card:hover {
-  transform: scale(1.02);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 h2 {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  color: #2c3e50;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 30px;
+  background: linear-gradient(45deg, #2c3e50, #3498db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2rem;
 }
 
 .form-control {
-  border: 2px solid #3498db;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 15px;
-  transition: all 0.3s ease;
+  border: 2px solid rgba(52, 152, 219, 0.2);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
 }
 
 .form-control:focus {
-  border-color: #2980b9;
+  border-color: #3498db;
   outline: none;
-  box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  transform: translateY(-2px);
 }
 
 .btn-primary {
-  background: linear-gradient(to right, #3498db, #6ab0de);
+  background: linear-gradient(45deg, #3498db, #2980b9);
   border: none;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 12px;
+  padding: 15px;
   font-size: 1rem;
-  transition: background 0.3s ease;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(to right, #2980b9, #1e6ba1);
+  background: linear-gradient(45deg, #2980b9, #3498db);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
-.text-decoration-none {
-  color: #3498db;
-  text-decoration: none;
-  transition: color 0.3s ease;
+.btn-primary:active {
+  transform: translateY(0);
 }
 
-.text-decoration-none:hover {
-  color: #2980b9;
+.alert {
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: none;
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  font-weight: 500;
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 15px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+  }
+
+  .form-control {
+    padding: 12px;
+  }
+
+  .btn-primary {
+    padding: 12px;
+  }
 }
